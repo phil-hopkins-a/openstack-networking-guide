@@ -6,6 +6,6 @@ Note: VXLAN tunnels require L2Population, due to bug -  ???? HA routers and L2Po
 
 System environment:
 
-![Neutron HA Router on Linux bridge Environment](images/netlha.eps "Neutron HA Router on Linux bridge Environment")
+![Neutron HA Router on Linux bridge Environment](images/netlha.png "Neutron HA Router on Linux bridge Environment")
 
 ## Configuration:
