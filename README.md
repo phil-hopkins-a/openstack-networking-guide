@@ -15,6 +15,7 @@ The configuration files on each node are similar with only the local_ip set to t
 1. Configure the base options
 
    1. Edit the /etc/neutron/neutron.conf file:
+   
    ...
    router_distributed = False
    l3_ha = True
@@ -22,10 +23,13 @@ The configuration files on each node are similar with only the local_ip set to t
    min_l3_agents_per_router = 2
    l3_ha_net_cidr = 169.254.192.0/18
    ...
+   
    2. Edit the l3_agent.ini file:
+   
    ...
    agent_mode = legacy
    ...
+   
  
 1. Configure the ML2 plug-in.
 
