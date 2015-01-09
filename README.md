@@ -15,36 +15,37 @@ The configuration files on each node are similar with only the local_ip set to t
 1. Configure the base options
 
    1. Edit the /etc/neutron/neutron.conf file:
-   
-   ...
+
+    ```
    router_distributed = False
    l3_ha = True
    max_l3_agents_per_router = 3
    min_l3_agents_per_router = 2
    l3_ha_net_cidr = 169.254.192.0/18
-   ...
-   
+    ```
+
    2. Edit the l3_agent.ini file:
-   
-   ...
-   agent_mode = legacy
-   ...
-   
+ 
+    ```
+    agent_mode = legacy
+    ```
+
  
 1. Configure the ML2 plug-in.
 
    1. Edit the /etc/neutron/plugins/ml2/ml2_conf.ini file:
-   ...
-   [linuxbridge]
+ 
+    ```
+    [linuxbridge]
 
-   [l2pop]
-   agent_boot_time = 180
+    [l2pop]
+    agent_boot_time = 180
 
-   [vxlan]
-   enable_vxlan = True
-   local_ip = TUNNEL_NETWORK_INTERFACE_IP
-   l2_population = True
-   ...
+    [vxlan]
+    enable_vxlan = True
+    local_ip = TUNNEL_NETWORK_INTERFACE_IP
+    l2_population = True
+    ```
  
  
   Note: Replace NOVA_ADMIN_USERNAME, NOVA_ADMIN_TENANT_ID, and
