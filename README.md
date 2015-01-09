@@ -66,25 +66,28 @@ The configuration files on each node are similar with only the local_ip set to t
       * Open vSwitch agent
 
 ##Create the routers and gateway:
-   ...
-   neutron net-create private
-   neutron subnet-create --name private-subnet private 10.1.0.0/28
-   neutron net-create private1
-   neutron subnet-create --name private1-subnet private1 10.2.0.0/28
-   neutron net-create --shared public --router:external=True
-   neutron net-create --shared public --router:external=True --provider:network_type flat --provider:physical_network phy-br-ex
-   neutron subnet-create --name public-subnet public  --allocation-pool start=172.16.0.32,end=172.16.0.64 --gateway=172.16.0.5 --enable_dhcp=False 172.16.0.0/24
-   neutron router-create MyRouter --distributed False --ha True
-   neutron router-interface-add MyRouter private-subnet
-   neutron router-interface-add MyRouter private1-subnet
-   neutron router-gateway-set MyRouter public
-   ...
+
+    ```
+    neutron net-create private
+    neutron subnet-create --name private-subnet private 10.1.0.0/28
+    neutron net-create private1
+    neutron subnet-create --name private1-subnet private1 10.2.0.0/28
+    neutron net-create --shared public --router:external=True
+    neutron net-create --shared public --router:external=True --provider:network_type flat --provider:physical_network phy-br-ex
+    neutron subnet-create --name public-subnet public  --allocation-pool start=172.16.0.32,end=172.16.0.64 --gateway=172.16.0.5 --enable_dhcp=False 172.16.0.0/24
+    neutron router-create MyRouter --distributed False --ha True
+    neutron router-interface-add MyRouter private-subnet
+    neutron router-interface-add MyRouter private1-subnet
+    neutron router-gateway-set MyRouter public
+    ```
 
 ##Boot two VMs, one on each network:
-   ...
-   nova boot --image cirros-qcow --flavor 1 --nic net-id=<UUID of private network> One
-   nova boot --image cirros-qcow --flavor 1 --nic net-id=<UUID of private1 network> Two
-   ...
+
+    ```
+    nova boot --image cirros-qcow --flavor 1 --nic net-id=<UUID of private network> One
+    nova boot --image cirros-qcow --flavor 1 --nic net-id=<UUID of private1 network> Two
+    ```
+    
 
 
 
