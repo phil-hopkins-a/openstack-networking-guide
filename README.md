@@ -19,9 +19,8 @@ minor modifications to the example configuration.
 1. At least two compute nodes with two network interfaces: management
    and instance tunnels.
 
-![Neutron HA Router  Scenario - Hardware Requirements](images/HALBopenstack.png "Neutron HA Router Scenario - Hardware Requirements")
+![Neutron HA Router  Scenario - Network Layout](images/HALBopenstack.png "Neutron HA Router Scenario - Network Layout")
 
-![Neutron DVR Scenario - Network Layout](../common/images/networkguide-neutron-dvr-networks.png "Neutron DVR Scenario - Network Layout")
 
 **Warning: Linux bridge HA routers are currently broken when using
 L2Population. This means that Linux bridge and VXLAN does not work.
@@ -93,14 +92,14 @@ manages SNAT for any instances without a floating IP address and well as
 floating IPs within the namespace. The metadata agent handles metadata
 operations for instances using tenant networks on HA routers.
 
-![Neutron DVR Scenario - Network Node Overview](../common/images/networkguide-neutron-dvr-network1.png "Neutron DVR Scenario - Network Node Overview")
+![Neutron HA router Scenario - Network Node Overview](./images/netnodelb1.png "Neutron DVR Scenario - Network Node Overview")
 
 The compute node runs the L2 Linux bridge agent. Using a separate Linux 
 bridge for each network, virtual ethernet pairs connect the VM to the
 bridge for a network. A tunnel or VLAN interface is also connected to the
 bridge to connect to the data network interface.
 
-![Neutron DVR Scenario - Compute Node Overview](../common/images/networkguide-neutron-dvr-compute1.png "Neutron DVR Scenario - Compute Node Overview")
+![Neutron HA router Scenario - Compute Node Overview](./images/computenodelb1.png "Neutron DVR Scenario - Compute Node Overview")
 
 ### Components
 
@@ -238,7 +237,7 @@ The configuration files on each node, controller, network, compute, are similar 
     nova boot --image cirros-qcow --flavor 1 --nic net-id=<UUID of private network> One
     nova boot --image cirros-qcow --flavor 1 --nic net-id=<UUID of private1 network> Two
     ```
-    
+#Packet Flow through HA router environment 
 
 The network implementation in this example uses Linux Bridge as the ML2 agent.   VXLAN tunnels are used, VLANs could also be used but with Linux Bridge GRE tunnelsare not a possibility. Linux Bridges are simpler to implement and understand. Performance wise when using tunneling technologies chose a NIC card which has a driver that supports off-loading the tunneling to the NIC card from the host CPU. Using the host CPU to impliment the tunneling, either using Open vSwitch or the Linux tunnel driver can reduce the network throughput by up to 3 to 4X.
 
