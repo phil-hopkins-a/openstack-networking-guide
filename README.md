@@ -263,8 +263,8 @@ Created a new network:
 +---------------------------+--------------------------------------+
 ```
       1. Create a subnet on the tenant network:
-      ```
-   neutron subnet-create --name private-subnet private 10.1.0.0/28
+```
+neutron subnet-create --name private-subnet private 10.1.0.0/28
 Created a new subnet:
 +-------------------+-------------------------------------------+
 | Field             | Value                                     |
@@ -284,6 +284,7 @@ Created a new subnet:
 | tenant_id         | f8207c03fd1e4b4aaf123efea4662819          |
 +-------------------+-------------------------------------------+
 ```
+
 ###External (flat) network
    1. Source the adminstrative tenant credentials.
    1. Create the external network:
