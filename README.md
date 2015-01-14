@@ -244,13 +244,13 @@ neutron agent-list
       1. Create the tenant network
 
     ```
-    neutron net-create private
+neutron net-create private
 Created a new network:
 +---------------------------+--------------------------------------+
 | Field                     | Value                                |
 +---------------------------+--------------------------------------+
 | admin_state_up            | True                                 |
-| id                        | ee624f0a-50b0-4c4a-9b94-0e2678ed73fa |
+| id                        | 5a89c39a-291c-46db-babd-2b718b9c12bb |
 | name                      | private                              |
 | provider:network_type     | vxlan                                |
 | provider:physical_network |                                      |
@@ -275,12 +275,12 @@ Created a new subnet:
 | enable_dhcp       | True                                      |
 | gateway_ip        | 10.1.0.1                                  |
 | host_routes       |                                           |
-| id                | a6c61994-c40a-41d8-b858-164d698fe5cf      |
+| id                | bf64a8aa-f47b-440e-9d64-888910ca52d4      |
 | ip_version        | 4                                         |
 | ipv6_address_mode |                                           |
 | ipv6_ra_mode      |                                           |
 | name              | private-subnet                            |
-| network_id        | ee624f0a-50b0-4c4a-9b94-0e2678ed73fa      |
+| network_id        | 5a89c39a-291c-46db-babd-2b718b9c12bb      |
 | tenant_id         | f8207c03fd1e4b4aaf123efea4662819          |
 +-------------------+-------------------------------------------+
 ```
@@ -288,14 +288,14 @@ Created a new subnet:
 ###External (flat) network
    1. Source the adminstrative tenant credentials.
    1. Create the external network:
-   ```
-    root@controller:~# neutron net-create --shared public --router:external=True --provider:network_type flat --provider:physical_network physnet1
+```
+neutron net-create --shared public --router:external=True --provider:network_type flat --provider:physical_network physnet1
 Created a new network:
 +---------------------------+--------------------------------------+
 | Field                     | Value                                |
 +---------------------------+--------------------------------------+
 | admin_state_up            | True                                 |
-| id                        | c91c3367-883b-4ee2-ae73-001f47d5312d |
+| id                        | eda0e6a0-7a31-4036-b926-e0533a21c4fd |
 | name                      | public                               |
 | provider:network_type     | flat                                 |
 | provider:physical_network | physnet1                             |
@@ -308,8 +308,8 @@ Created a new network:
 +---------------------------+--------------------------------------+
 ```
    1. Create a subnet on the external network:
-   ```
-    neutron subnet-create --name public-subnet public  --allocation-pool start=172.16.0.32,end=172.16.0.64 --gateway=172.16.0.5 --enable_dhcp=False 172.16.0.0/24
+```
+neutron subnet-create --name public-subnet public  --allocation-pool start=172.16.0.32,end=172.16.0.64 --gateway=172.16.0.5 --enable_dhcp=False 172.16.0.0/24
 Created a new subnet:
 +-------------------+------------------------------------------------+
 | Field             | Value                                          |
@@ -320,21 +320,44 @@ Created a new subnet:
 | enable_dhcp       | False                                          |
 | gateway_ip        | 172.16.0.5                                     |
 | host_routes       |                                                |
-| id                | 40f1061b-1e39-4890-bc4b-044efd5835d3           |
+| id                | ccfd769c-1ef5-4173-9637-db6323f24069           |
 | ip_version        | 4                                              |
 | ipv6_address_mode |                                                |
 | ipv6_ra_mode      |                                                |
 | name              | public-subnet                                  |
-| network_id        | c91c3367-883b-4ee2-ae73-001f47d5312d           |
+| network_id        | eda0e6a0-7a31-4036-b926-e0533a21c4fd           |
 | tenant_id         | f8207c03fd1e4b4aaf123efea4662819               |
 +-------------------+------------------------------------------------+
 ```
+   1. Create aa HA router:
+```
+neutron router-create MyRouter --distributed False --ha True
+Created a new router:
++-----------------------+--------------------------------------+
+| Field                 | Value                                |
++-----------------------+--------------------------------------+
+| admin_state_up        | True                                 |
+| distributed           | False                                |
+| external_gateway_info |                                      |
+| ha                    | True                                 |
+| id                    | 4feb6bce-b5d5-4c99-9f6d-7417c065d8e2 |
+| name                  | MyRouter                             |
+| routes                |                                      |
+| status                | ACTIVE                               |
+| tenant_id             | f8207c03fd1e4b4aaf123efea4662819     |
++-----------------------+--------------------------------------+
+```
+   1. Add the private-subnet interface to the router:
+```
+neutron router-interface-add MyRouter private-subnet
+Added interface c6ff9431-ad6f-4263-84ce-63cb39bf2cf3 to router MyRouter.
+```
+   1. Set the router gateway to the external network:
+```
+neutron router-gateway-set MyRouter public
+Set gateway for router MyRouter
 
-    neutron router-create MyRouter --distributed False --ha True
-    neutron router-interface-add MyRouter private-subnet
-    neutron router-interface-add MyRouter private1-subnet
-    neutron router-gateway-set MyRouter public
-    ```
+```
 
 1. Boot two VMs, one on each network:
 
