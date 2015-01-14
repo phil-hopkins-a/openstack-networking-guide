@@ -217,7 +217,7 @@ The configuration files on each node, controller, network, compute, are similar 
 
 ##Create networks and VMs:
 
-1. Create the networks and router
+1. Create the networks and router:
 
     ```
     neutron net-create private
