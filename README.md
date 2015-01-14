@@ -215,16 +215,15 @@ The configuration files on each node, controller, network, compute, are similar 
    3. Computer node(s):
       * Linux bridge agent
 
-##Create the routers and gateway:
+##Create networks and VMs:
 
-1. text
+1. Create the networks and router
 
     ```
     neutron net-create private
     neutron subnet-create --name private-subnet private 10.1.0.0/28
     neutron net-create private1
     neutron subnet-create --name private1-subnet private1 10.2.0.0/28
-    neutron net-create --shared public --router:external=True
     neutron net-create --shared public --router:external=True --provider:network_type flat --provider:physical_network phy-br-ex
     neutron subnet-create --name public-subnet public  --allocation-pool start=172.16.0.32,end=172.16.0.64 --gateway=172.16.0.5 --enable_dhcp=False 172.16.0.0/24
     neutron router-create MyRouter --distributed False --ha True
@@ -233,7 +232,7 @@ The configuration files on each node, controller, network, compute, are similar 
     neutron router-gateway-set MyRouter public
     ```
 
-##Boot two VMs, one on each network:
+1. Boot two VMs, one on each network:
 
     ```
     nova boot --image cirros-qcow --flavor 1 --nic net-id=<UUID of private network> One
