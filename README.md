@@ -69,7 +69,7 @@ http://git.openstack.org/cgit/openstack/neutron/
   1. ML2 plug-in, Linux bridgeh agent and any dependencies including the `ipset` and
      `conntrack` utilities.
 
-![Neutron DVR Scenario - Service Layout](../common/images/networkguide-neutron-dvr-services.png "Neutron DVR Scenario - Service Layout")
+![Neutron HA router Scenario - Service Layout](../common/images/networkguide-neutron-dvr-services.png "Neutron HA router Scenario - Service Layout")
 
 ## Architecture
 
@@ -83,7 +83,7 @@ which namespace router will be the master and applies the gateway IP
 as a VIP into the master namespace. If a failure is detected a new
 master is elected and the VIPs are moved into the new master namespace.
 
-![Neutron DVR Scenario - Architecture Overview](../common/images/networkguide-neutron-dvr-general.png "Neutron DVR Scenario - Architecture Overview")
+![Neutron HA router Scenario - Architecture Overview](../common/images/networkguide-neutron-dvr-general.png "Neutron HA router Scenario - Architecture Overview")
 
 The network node runs the L3 agent, DHCP agent, and metadata agent. HA 
 routers can coexist with multiple DHCP agents. DHCP agents can even run
@@ -92,14 +92,14 @@ manages SNAT for any instances without a floating IP address and well as
 floating IPs within the namespace. The metadata agent handles metadata
 operations for instances using tenant networks on HA routers.
 
-![Neutron HA router Scenario - Network Node Overview]( ./images/netnodelb1.png "Neutron DVR Scenario - Network Node Overview")
+![Neutron HA router Scenario - Network Node Overview](./images/netnodelb1.png "Neutron HA router Scenario - Network Node Overview")
 
 The compute node runs the L2 Linux bridge agent. Using a separate Linux 
 bridge for each network, virtual ethernet pairs connect the VM to the
 bridge for a network. A tunnel or VLAN interface is also connected to the
 bridge to connect to the data network interface.
 
-![Neutron HA router Scenario - Compute Node Overview](./images/computenodelb1.png "Neutron DVR Scenario - Compute Node Overview")
+![Neutron HA router Scenario - Compute Node Overview](./images/computenodelb1.png "Neutron HA router Scenario - Compute Node Overview")
 
 ### Components
 
@@ -127,7 +127,7 @@ The network node contains the following components:
   1. The metadata agent handles metadata operations for instances
      using tenant networks using HA routers.
 
-![Neutron DVR Scenario - Network Node Components](../common/images/networkguide-neutron-dvr-network2.png "Neutron DVR Scenario - Network Node Components")
+![Neutron HA router Scenario - Network Node Components](../common/images/networkguide-neutron-dvr-network2.png "Neutron HA router Scenario - Network Node Components")
 
 The compute nodes contain the following components:
 
@@ -216,6 +216,8 @@ The configuration files on each node, controller, network, compute, are similar 
       * Linux bridge agent
 
 ##Create the routers and gateway:
+
+text
 
     ```
     neutron net-create private
