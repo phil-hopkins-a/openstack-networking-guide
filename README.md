@@ -214,18 +214,121 @@ The configuration files on each node, controller, network, compute, are similar 
       * Metadata agent
    3. Computer node(s):
       * Linux bridge agent
+      
 
 ##Create networks and VMs:
 
-1. Create the networks and router:
+1. check the agents:
+```
+neutron agent-list
++--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
+| id                                   | agent_type         | host     | alive | admin_state_up | binary                    |
++--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
+| 16a34503-f852-40ea-93f1-969e318b6210 | Linux bridge agent | compute  | :-)   | True           | neutron-linuxbridge-agent |
+| 7856ba29-5447-4392-b2e1-2c236bd5f479 | Metadata agent     | network  | :-)   | True           | neutron-metadata-agent    |
+| 85d5c715-08f6-425d-9efc-73633736bf06 | Linux bridge agent | network2 | :-)   | True           | neutron-linuxbridge-agent |
+| 98d32a4d-1257-4b42-aea4-ad9bd7deea62 | Metadata agent     | network2 | :-)   | True           | neutron-metadata-agent    |
+| b45096a1-7bfa-4816-8b3c-900b752a9c08 | DHCP agent         | network  | :-)   | True           | neutron-dhcp-agent        |
+| d4c45b8e-3b34-4192-80b1-bbdefb110c3f | Linux bridge agent | compute2 | :-)   | True           | neutron-linuxbridge-agent |
+| e5a4e06b-dd9d-4b97-a09a-c8ba07706753 | Linux bridge agent | network  | :-)   | True           | neutron-linuxbridge-agent |
+| e8f8b228-5c3e-4378-b8f5-36b5c41cb3fe | L3 agent           | network2 | :-)   | True           | neutron-l3-agent          |
+| f9f94732-08af-4f82-8908-fdcd69ab12e8 | L3 agent           | network  | :-)   | True           | neutron-l3-agent          |
+| fbeebad9-6590-4f78-bb29-7d58ea867878 | DHCP agent         | network2 | :-)   | True           | neutron-dhcp-agent        |
++--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
+```
+
+###Create the networks and router:
+
+   1. Tenant VXLAN network
+      1. Source regular tenant credentials
+      1. Create the tenant network
 
     ```
     neutron net-create private
-    neutron subnet-create --name private-subnet private 10.1.0.0/28
-    neutron net-create private1
-    neutron subnet-create --name private1-subnet private1 10.2.0.0/28
-    neutron net-create --shared public --router:external=True --provider:network_type flat --provider:physical_network phy-br-ex
+Created a new network:
++---------------------------+--------------------------------------+
+| Field                     | Value                                |
++---------------------------+--------------------------------------+
+| admin_state_up            | True                                 |
+| id                        | ee624f0a-50b0-4c4a-9b94-0e2678ed73fa |
+| name                      | private                              |
+| provider:network_type     | vxlan                                |
+| provider:physical_network |                                      |
+| provider:segmentation_id  | 100                                  |
+| router:external           | False                                |
+| shared                    | False                                |
+| status                    | ACTIVE                               |
+| subnets                   |                                      |
+| tenant_id                 | f8207c03fd1e4b4aaf123efea4662819     |
++---------------------------+--------------------------------------+
+```
+      1. Create a subnet on the tenant network:
+      ```
+   neutron subnet-create --name private-subnet private 10.1.0.0/28
+Created a new subnet:
++-------------------+-------------------------------------------+
+| Field             | Value                                     |
++-------------------+-------------------------------------------+
+| allocation_pools  | {"start": "10.1.0.2", "end": "10.1.0.14"} |
+| cidr              | 10.1.0.0/28                               |
+| dns_nameservers   |                                           |
+| enable_dhcp       | True                                      |
+| gateway_ip        | 10.1.0.1                                  |
+| host_routes       |                                           |
+| id                | a6c61994-c40a-41d8-b858-164d698fe5cf      |
+| ip_version        | 4                                         |
+| ipv6_address_mode |                                           |
+| ipv6_ra_mode      |                                           |
+| name              | private-subnet                            |
+| network_id        | ee624f0a-50b0-4c4a-9b94-0e2678ed73fa      |
+| tenant_id         | f8207c03fd1e4b4aaf123efea4662819          |
++-------------------+-------------------------------------------+
+```
+###External (flat) network
+   1. Source the adminstrative tenant credentials.
+   1. Create the external network:
+   ```
+    root@controller:~# neutron net-create --shared public --router:external=True --provider:network_type flat --provider:physical_network physnet1
+Created a new network:
++---------------------------+--------------------------------------+
+| Field                     | Value                                |
++---------------------------+--------------------------------------+
+| admin_state_up            | True                                 |
+| id                        | c91c3367-883b-4ee2-ae73-001f47d5312d |
+| name                      | public                               |
+| provider:network_type     | flat                                 |
+| provider:physical_network | physnet1                             |
+| provider:segmentation_id  |                                      |
+| router:external           | True                                 |
+| shared                    | True                                 |
+| status                    | ACTIVE                               |
+| subnets                   |                                      |
+| tenant_id                 | f8207c03fd1e4b4aaf123efea4662819     |
++---------------------------+--------------------------------------+
+```
+   1. Create a subnet on the external network:
+   ```
     neutron subnet-create --name public-subnet public  --allocation-pool start=172.16.0.32,end=172.16.0.64 --gateway=172.16.0.5 --enable_dhcp=False 172.16.0.0/24
+Created a new subnet:
++-------------------+------------------------------------------------+
+| Field             | Value                                          |
++-------------------+------------------------------------------------+
+| allocation_pools  | {"start": "172.16.0.32", "end": "172.16.0.64"} |
+| cidr              | 172.16.0.0/24                                  |
+| dns_nameservers   |                                                |
+| enable_dhcp       | False                                          |
+| gateway_ip        | 172.16.0.5                                     |
+| host_routes       |                                                |
+| id                | 40f1061b-1e39-4890-bc4b-044efd5835d3           |
+| ip_version        | 4                                              |
+| ipv6_address_mode |                                                |
+| ipv6_ra_mode      |                                                |
+| name              | public-subnet                                  |
+| network_id        | c91c3367-883b-4ee2-ae73-001f47d5312d           |
+| tenant_id         | f8207c03fd1e4b4aaf123efea4662819               |
++-------------------+------------------------------------------------+
+```
+
     neutron router-create MyRouter --distributed False --ha True
     neutron router-interface-add MyRouter private-subnet
     neutron router-interface-add MyRouter private1-subnet
