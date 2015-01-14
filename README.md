@@ -1,4 +1,3 @@
-# Scenario: HA routers on Linux Bridge using VXLAN tunnels
 
 # Scenario: Basic implementation of HA routers
 
@@ -13,14 +12,14 @@ minor modifications to the example configuration.
 
 1. One controller node with one network interface: management.
 
-1. One network node with three network interfaces: management, instance
+1. At least two network nodes with three network interfaces: management, instance
    tunnels, and external (typically the Internet). The Linux bridge
    bridge `br-ex` must contain a port on the external interface.
 
 1. At least two compute nodes with two network interfaces: management
    and instance tunnels.
 
-![Neutron DVR Scenario - Hardware Requirements](../common/images/networkguide-neutron-dvr-hw.png "Neutron DVR Scenario - Hardware Requirements")
+![Neutron HA Router  Scenario - Hardware Requirements](images/HALBopenstack.png "Neutron HA Router Scenario - Hardware Requirements")
 
 ![Neutron DVR Scenario - Network Layout](../common/images/networkguide-neutron-dvr-networks.png "Neutron DVR Scenario - Network Layout")
 
