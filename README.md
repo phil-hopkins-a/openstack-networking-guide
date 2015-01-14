@@ -92,7 +92,7 @@ manages SNAT for any instances without a floating IP address and well as
 floating IPs within the namespace. The metadata agent handles metadata
 operations for instances using tenant networks on HA routers.
 
-![Neutron HA router Scenario - Network Node Overview](./images/netnodelb1.png "Neutron DVR Scenario - Network Node Overview")
+![Neutron HA router Scenario - Network Node Overview]( ./images/netnodelb1.png "Neutron DVR Scenario - Network Node Overview")
 
 The compute node runs the L2 Linux bridge agent. Using a separate Linux 
 bridge for each network, virtual ethernet pairs connect the VM to the
