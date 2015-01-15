@@ -334,35 +334,35 @@ Created a new subnet:
    1. Create an HA router:
    
    ```
-neutron router-create MyRouter --distributed False --ha True
-Created a new router:
-+-----------------------+--------------------------------------+
-| Field                 | Value                                |
-+-----------------------+--------------------------------------+
-| admin_state_up        | True                                 |
-| distributed           | False                                |
-| external_gateway_info |                                      |
-| ha                    | True                                 |
-| id                    | 4feb6bce-b5d5-4c99-9f6d-7417c065d8e2 |
-| name                  | MyRouter                             |
-| routes                |                                      |
-| status                | ACTIVE                               |
-| tenant_id             | f8207c03fd1e4b4aaf123efea4662819     |
-+-----------------------+--------------------------------------+
-```
+   neutron router-create MyRouter --distributed False --ha True
+   Created a new router:
+   +-----------------------+--------------------------------------+
+   | Field                 | Value                                |
+   +-----------------------+--------------------------------------+
+   | admin_state_up        | True                                 |
+   | distributed           | False                                |
+   | external_gateway_info |                                      |
+   | ha                    | True                                 |
+   | id                    | 4feb6bce-b5d5-4c99-9f6d-7417c065d8e2 |
+   | name                  | MyRouter                             |
+   | routes                |                                      |
+   | status                | ACTIVE                               |
+   | tenant_id             | f8207c03fd1e4b4aaf123efea4662819     |
+   +-----------------------+--------------------------------------+
+   ```
    1. Add the private-subnet interface to the router:
-   
-```
-neutron router-interface-add MyRouter private-subnet
-Added interface c6ff9431-ad6f-4263-84ce-63cb39bf2cf3 to router MyRouter.
-```
+      
+   ```
+   neutron router-interface-add MyRouter private-subnet
+   Added interface c6ff9431-ad6f-4263-84ce-63cb39bf2cf3 to router MyRouter.
+   ```
    1. Set the router gateway to the external network:
    
-```
-neutron router-gateway-set MyRouter public
-Set gateway for router MyRouter
+   ```
+   neutron router-gateway-set MyRouter public
+   Set gateway for router MyRouter
 
-```
+   ```
 
    1. Boot two VMs, one on each network:
    
