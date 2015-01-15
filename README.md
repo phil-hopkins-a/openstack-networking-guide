@@ -309,8 +309,8 @@ Created a new subnet:
    ```
    1. Create a subnet on the external network:
    ```
-neutron subnet-create --name public-subnet public  --allocation-pool start=172.16.0.32,end=172.16.0.64 --gateway=172.16.0.5 --enable_dhcp=False 172.16.0.0/24
-Created a new subnet:
+   neutron subnet-create --name public-subnet public  --allocation-pool start=172.16.0.32,end=172.16.0.64 --gateway=172.16.0.5 --enable_dhcp=False 172.16.0.0/24
+   Created a new subnet:
 +-------------------+------------------------------------------------+
 | Field             | Value                                          |
 +-------------------+------------------------------------------------+
