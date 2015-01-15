@@ -351,23 +351,27 @@ Created a new router:
 +-----------------------+--------------------------------------+
 ```
    1. Add the private-subnet interface to the router:
+   
 ```
 neutron router-interface-add MyRouter private-subnet
 Added interface c6ff9431-ad6f-4263-84ce-63cb39bf2cf3 to router MyRouter.
 ```
    1. Set the router gateway to the external network:
+   
 ```
 neutron router-gateway-set MyRouter public
 Set gateway for router MyRouter
 
 ```
 
-1. Boot two VMs, one on each network:
+   1. Boot two VMs, one on each network:
+   
 
     ```
     nova boot --image cirros-qcow --flavor 1 --nic net-id=<UUID of private network> One
     nova boot --image cirros-qcow --flavor 1 --nic net-id=<UUID of private1 network> Two
     ```
+    
 #Packet Flow through HA router environment 
 
 The network implementation in this example uses Linux Bridge as the ML2 agent.   VXLAN tunnels are used, VLANs could also be used but with Linux Bridge GRE tunnelsare not a possibility. Linux Bridges are simpler to implement and understand. Performance wise when using tunneling technologies chose a NIC card which has a driver that supports off-loading the tunneling to the NIC card from the host CPU. Using the host CPU to impliment the tunneling, either using Open vSwitch or the Linux tunnel driver can reduce the network throughput by up to 3 to 4X.
