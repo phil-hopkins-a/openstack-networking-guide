@@ -308,7 +308,7 @@ Created a new subnet:
    +---------------------------+--------------------------------------+
    ```
    1. Create a subnet on the external network:
-```
+   ```
 neutron subnet-create --name public-subnet public  --allocation-pool start=172.16.0.32,end=172.16.0.64 --gateway=172.16.0.5 --enable_dhcp=False 172.16.0.0/24
 Created a new subnet:
 +-------------------+------------------------------------------------+
@@ -328,7 +328,7 @@ Created a new subnet:
 | network_id        | eda0e6a0-7a31-4036-b926-e0533a21c4fd           |
 | tenant_id         | f8207c03fd1e4b4aaf123efea4662819               |
 +-------------------+------------------------------------------------+
-```
+   ```
    1. Create an HA router:
 ```
 neutron router-create MyRouter --distributed False --ha True
