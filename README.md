@@ -288,6 +288,7 @@ Created a new subnet:
 ###External (flat) network
    1. Source the adminstrative tenant credentials.
    1. Create the external network:
+   
    ```
    neutron net-create --shared public --router:external=True --provider:network_type flat --provider:physical_network physnet1
    Created a new network:
@@ -308,6 +309,7 @@ Created a new subnet:
    +---------------------------+--------------------------------------+
    ```
    1. Create a subnet on the external network:
+   
    ```
    neutron subnet-create --name public-subnet public  --allocation-pool start=172.16.0.32,end=172.16.0.64 --gateway=172.16.0.5 --enable_dhcp=False 172.16.0.0/24
    Created a new subnet:
@@ -330,6 +332,7 @@ Created a new subnet:
    +-------------------+------------------------------------------------+
    ```
    1. Create an HA router:
+   
    ```
 neutron router-create MyRouter --distributed False --ha True
 Created a new router:
