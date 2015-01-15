@@ -288,25 +288,25 @@ Created a new subnet:
 ###External (flat) network
    1. Source the adminstrative tenant credentials.
    1. Create the external network:
-```
-neutron net-create --shared public --router:external=True --provider:network_type flat --provider:physical_network physnet1
-Created a new network:
-+---------------------------+--------------------------------------+
-| Field                     | Value                                |
-+---------------------------+--------------------------------------+
-| admin_state_up            | True                                 |
-| id                        | eda0e6a0-7a31-4036-b926-e0533a21c4fd |
-| name                      | public                               |
-| provider:network_type     | flat                                 |
-| provider:physical_network | physnet1                             |
-| provider:segmentation_id  |                                      |
-| router:external           | True                                 |
-| shared                    | True                                 |
-| status                    | ACTIVE                               |
-| subnets                   |                                      |
-| tenant_id                 | f8207c03fd1e4b4aaf123efea4662819     |
-+---------------------------+--------------------------------------+
-```
+   ```
+   neutron net-create --shared public --router:external=True --provider:network_type flat --provider:physical_network physnet1
+   Created a new network:
+   +---------------------------+--------------------------------------+
+   | Field                     | Value                                |
+   +---------------------------+--------------------------------------+
+   | admin_state_up            | True                                 |
+   | id                        | eda0e6a0-7a31-4036-b926-e0533a21c4fd |
+   | name                      | public                               |
+   | provider:network_type     | flat                                 |
+   | provider:physical_network | physnet1                             |
+   | provider:segmentation_id  |                                      |
+   | router:external           | True                                 |
+   | shared                    | True                                 |
+   | status                    | ACTIVE                               |
+   | subnets                   |                                      |
+   | tenant_id                 | f8207c03fd1e4b4aaf123efea4662819     |
+   +---------------------------+--------------------------------------+
+   ```
    1. Create a subnet on the external network:
 ```
 neutron subnet-create --name public-subnet public  --allocation-pool start=172.16.0.32,end=172.16.0.64 --gateway=172.16.0.5 --enable_dhcp=False 172.16.0.0/24
@@ -329,7 +329,7 @@ Created a new subnet:
 | tenant_id         | f8207c03fd1e4b4aaf123efea4662819               |
 +-------------------+------------------------------------------------+
 ```
-   1. Create aa HA router:
+   1. Create an HA router:
 ```
 neutron router-create MyRouter --distributed False --ha True
 Created a new router:
