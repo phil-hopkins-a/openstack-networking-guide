@@ -330,7 +330,7 @@ Created a new subnet:
    +-------------------+------------------------------------------------+
    ```
    1. Create an HA router:
-```
+   ```
 neutron router-create MyRouter --distributed False --ha True
 Created a new router:
 +-----------------------+--------------------------------------+
