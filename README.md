@@ -66,7 +66,7 @@ http://git.openstack.org/cgit/openstack/neutron/
   1. Operational OpenStack Compute controller/management service with
      appropriate configuration to use neutron in the nova.conf file.
 
-  1. ML2 plug-in, Linux bridgeh agent and any dependencies including the `ipset` and
+  1. ML2 plug-in, Linux bridge agent and any dependencies including the `ipset` and
      `conntrack` utilities.
 
 ![Neutron HA router Scenario - Service Layout](../common/images/networkguide-neutron-dvr-services.png "Neutron HA router Scenario - Service Layout")
@@ -111,7 +111,7 @@ The network node contains the following components:
 
 1. DHCP agent managing the `qdhcp` namespaces.
 
-  1. The `dhcp` namespaces provide DHCP services for instances using 
+  1. The `qdhcp` namespaces provide DHCP services for instances using 
      tenant networks on HA routers.
 
 1. L3 agent managing the `qrouter` namespaces.
@@ -162,7 +162,7 @@ System environment:
 
 ## Configuration:
 
-The configuration files on each node, controller, network, compute, are similar with only the local_ip set to the interface on the data network. The crutial settings are indicated as follows:
+The configuration files on each node, controller, network, compute, are similar with only the local_ip set to the interface on the data network. The crucial settings are indicated as follows:
 
 1. Configure the base options
 
@@ -224,7 +224,6 @@ neutron agent-list
 +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
 | id                                   | agent_type         | host     | alive | admin_state_up | binary                    |
 +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
-| 16a34503-f852-40ea-93f1-969e318b6210 | Linux bridge agent | compute  | :-)   | True           | neutron-linuxbridge-agent |
 | 7856ba29-5447-4392-b2e1-2c236bd5f479 | Metadata agent     | network  | :-)   | True           | neutron-metadata-agent    |
 | 85d5c715-08f6-425d-9efc-73633736bf06 | Linux bridge agent | network2 | :-)   | True           | neutron-linuxbridge-agent |
 | 98d32a4d-1257-4b42-aea4-ad9bd7deea62 | Metadata agent     | network2 | :-)   | True           | neutron-metadata-agent    |
@@ -232,6 +231,7 @@ neutron agent-list
 | d4c45b8e-3b34-4192-80b1-bbdefb110c3f | Linux bridge agent | compute2 | :-)   | True           | neutron-linuxbridge-agent |
 | e5a4e06b-dd9d-4b97-a09a-c8ba07706753 | Linux bridge agent | network  | :-)   | True           | neutron-linuxbridge-agent |
 | e8f8b228-5c3e-4378-b8f5-36b5c41cb3fe | L3 agent           | network2 | :-)   | True           | neutron-l3-agent          |
+| f2d10c26-2136-4e6a-86e5-d22f67ab22d7 | Linux bridge agent | compute  | :-)   | True           | neutron-linuxbridge-agent |
 | f9f94732-08af-4f82-8908-fdcd69ab12e8 | L3 agent           | network  | :-)   | True           | neutron-l3-agent          |
 | fbeebad9-6590-4f78-bb29-7d58ea867878 | DHCP agent         | network2 | :-)   | True           | neutron-dhcp-agent        |
 +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
@@ -244,46 +244,48 @@ neutron agent-list
       1. Create the tenant network
 
     ```
+   neutron net-create private
+   Created a new network:
 neutron net-create private
 Created a new network:
-+---------------------------+--------------------------------------+
-| Field                     | Value                                |
-+---------------------------+--------------------------------------+
-| admin_state_up            | True                                 |
-| id                        | 5a89c39a-291c-46db-babd-2b718b9c12bb |
-| name                      | private                              |
-| provider:network_type     | vxlan                                |
-| provider:physical_network |                                      |
-| provider:segmentation_id  | 100                                  |
-| router:external           | False                                |
-| shared                    | False                                |
-| status                    | ACTIVE                               |
-| subnets                   |                                      |
-| tenant_id                 | f8207c03fd1e4b4aaf123efea4662819     |
-+---------------------------+--------------------------------------+
-```
-      1. Create a subnet on the tenant network:
-```
-neutron subnet-create --name private-subnet private 10.1.0.0/28
-Created a new subnet:
-+-------------------+-------------------------------------------+
-| Field             | Value                                     |
-+-------------------+-------------------------------------------+
-| allocation_pools  | {"start": "10.1.0.2", "end": "10.1.0.14"} |
-| cidr              | 10.1.0.0/28                               |
-| dns_nameservers   |                                           |
-| enable_dhcp       | True                                      |
-| gateway_ip        | 10.1.0.1                                  |
-| host_routes       |                                           |
-| id                | bf64a8aa-f47b-440e-9d64-888910ca52d4      |
-| ip_version        | 4                                         |
-| ipv6_address_mode |                                           |
-| ipv6_ra_mode      |                                           |
-| name              | private-subnet                            |
-| network_id        | 5a89c39a-291c-46db-babd-2b718b9c12bb      |
-| tenant_id         | f8207c03fd1e4b4aaf123efea4662819          |
-+-------------------+-------------------------------------------+
-```
+   +---------------------------+--------------------------------------+
+   | Field                     | Value                                |
+   +---------------------------+--------------------------------------+
+   | admin_state_up            | True                                 |
+   | id                        | d990778b-49ea-4beb-9336-6ea2248edf7d |
+   | name                      | private                              |
+   | provider:network_type     | vxlan                                |
+   | provider:physical_network |                                      |
+   | provider:segmentation_id  | 100                                  |
+   | router:external           | False                                |
+   | shared                    | False                                |
+   | status                    | ACTIVE                               |
+   | subnets                   |                                      |
+   | tenant_id                 | f8207c03fd1e4b4aaf123efea4662819     |
+   +---------------------------+--------------------------------------+
+   ```
+   1. Create a subnet on the tenant network:
+   ```
+   neutron subnet-create --name private-subnet private 10.1.0.0/28
+   Created a new subnet:
+   +-------------------+-------------------------------------------+
+   | Field             | Value                                     |
+   +-------------------+-------------------------------------------+
+   | allocation_pools  | {"start": "10.1.0.2", "end": "10.1.0.14"} |
+   | cidr              | 10.1.0.0/28                               |
+   | dns_nameservers   |                                           |
+   | enable_dhcp       | True                                      |
+   | gateway_ip        | 10.1.0.1                                  |
+   | host_routes       |                                           |
+   | id                | b7fe4e86-65d5-4e88-8266-88795ae4ac53      |
+   | ip_version        | 4                                         |
+   | ipv6_address_mode |                                           |
+   | ipv6_ra_mode      |                                           |
+   | name              | private-subnet                            |
+   | network_id        | d990778b-49ea-4beb-9336-6ea2248edf7d      |
+   | tenant_id         | f8207c03fd1e4b4aaf123efea4662819          |
+   +-------------------+-------------------------------------------+
+   ```
 
 ###External (flat) network
    1. Source the adminstrative tenant credentials.
@@ -296,7 +298,7 @@ Created a new subnet:
    | Field                     | Value                                |
    +---------------------------+--------------------------------------+
    | admin_state_up            | True                                 |
-   | id                        | eda0e6a0-7a31-4036-b926-e0533a21c4fd |
+   | id                        | 230a5d21-9ccc-447e-9d7e-3a86d4e2294d |
    | name                      | public                               |
    | provider:network_type     | flat                                 |
    | provider:physical_network | physnet1                             |
@@ -322,12 +324,12 @@ Created a new subnet:
    | enable_dhcp       | False                                          |
    | gateway_ip        | 172.16.0.5                                     |
    | host_routes       |                                                |
-   | id                | ccfd769c-1ef5-4173-9637-db6323f24069           |
+   | id                | 3bf2ed2a-1cab-4fbe-b4a5-636c687e2fc3           |
    | ip_version        | 4                                              |
    | ipv6_address_mode |                                                |
    | ipv6_ra_mode      |                                                |
    | name              | public-subnet                                  |
-   | network_id        | eda0e6a0-7a31-4036-b926-e0533a21c4fd           |
+   | network_id        | 230a5d21-9ccc-447e-9d7e-3a86d4e2294d           |
    | tenant_id         | f8207c03fd1e4b4aaf123efea4662819               |
    +-------------------+------------------------------------------------+
    ```
@@ -343,7 +345,7 @@ Created a new subnet:
    | distributed           | False                                |
    | external_gateway_info |                                      |
    | ha                    | True                                 |
-   | id                    | 4feb6bce-b5d5-4c99-9f6d-7417c065d8e2 |
+   | id                    | 557bf478-6afe-48af-872f-63513f7e9b92 |
    | name                  | MyRouter                             |
    | routes                |                                      |
    | status                | ACTIVE                               |
@@ -351,222 +353,179 @@ Created a new subnet:
    +-----------------------+--------------------------------------+
    ```
    1. Add the private-subnet interface to the router:
-      
+
    ```
    neutron router-interface-add MyRouter private-subnet
-   Added interface c6ff9431-ad6f-4263-84ce-63cb39bf2cf3 to router MyRouter.
+   Added interface 4cb8f7ea-28f2-4fe1-91f7-1c2823994fc4 to router MyRouter.
    ```
    1. Set the router gateway to the external network:
-   
+
    ```
    neutron router-gateway-set MyRouter public
    Set gateway for router MyRouter
-
    ```
 
-   1. Boot two VMs, one on each network:
-   
+   1. Boot a VMsk:
 
-    ```
-    nova boot --image cirros-qcow --flavor 1 --nic net-id=<UUID of private network> One
-    nova boot --image cirros-qcow --flavor 1 --nic net-id=<UUID of private1 network> Two
-    ```
-    
-#Packet Flow through HA router environment 
+   ```
+   nova boot --image cirros-qcow2 --flavor 1 --nic net-id=d990778b-49ea-4beb-9336-6ea2248edf7d One
+   +--------------------------------------+-----------------------------------------------------+
+   | Property                             | Value                                               |
+   +--------------------------------------+-----------------------------------------------------+
+   | OS-DCF:diskConfig                    | MANUAL                                              |
+   | OS-EXT-AZ:availability_zone          | nova                                                |
+   | OS-EXT-SRV-ATTR:host                 | -                                                   |
+   | OS-EXT-SRV-ATTR:hypervisor_hostname  | -                                                   |
+   | OS-EXT-SRV-ATTR:instance_name        | instance-00000025                                   |
+   | OS-EXT-STS:power_state               | 0                                                   |
+   | OS-EXT-STS:task_state                | scheduling                                          |
+   | OS-EXT-STS:vm_state                  | building                                            |
+   | OS-SRV-USG:launched_at               | -                                                   |
+   | OS-SRV-USG:terminated_at             | -                                                   |
+   | accessIPv4                           |                                                     |
+   | accessIPv6                           |                                                     |
+   | adminPass                            | VnwmSkCfrM4A                                        |
+   | config_drive                         |                                                     |
+   | created                              | 2015-02-03T18:07:45Z                                |
+   | flavor                               | m1.tiny (1)                                         |
+   | hostId                               |                                                     |
+   | id                                   | b1500828-32c6-4850-a904-c0a0f75288f2                |
+   | image                                | cirros-qcow2 (394495f2-45e1-4dbd-8666-6e1f49c259d2) |
+   | key_name                             | -                                                   |
+   | metadata                             | {}                                                  |
+   | name                                 | One                                                 |
+   | os-extended-volumes:volumes_attached | []                                                  |
+   | progress                             | 0                                                   |
+   | security_groups                      | default                                             |
+   | status                               | BUILD                                               |
+   | tenant_id                            | f8207c03fd1e4b4aaf123efea4662819                    |
+   | updated                              | 2015-02-03T18:07:46Z                                |
+   | user_id                              | a5bad7856f3e47908b17ab64004c6def                    |
+   +--------------------------------------+-----------------------------------------------------+
 
-The network implementation in this example uses Linux Bridge as the ML2 agent.   VXLAN tunnels are used, VLANs could also be used but with Linux Bridge GRE tunnelsare not a possibility. Linux Bridges are simpler to implement and understand. Performance wise when using tunneling technologies chose a NIC card which has a driver that supports off-loading the tunneling to the NIC card from the host CPU. Using the host CPU to impliment the tunneling, either using Open vSwitch or the Linux tunnel driver can reduce the network throughput by up to 3 to 4X.
+   ```
+   1. Namespaces created on the network nodes:
+   ```
+   ip netns
+   qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2
+   qdhcp-4bc242e0-97c4-4791-908d-7c471fc10ad1
+   qdhcp-d990778b-49ea-4beb-9336-6ea2248edf7d
+   ```
 
-veth pairs are used extensively in neutron as the “wiring' to connect the various networking pieces together. Typically in this setup on the network node one end of a veth pair will be in a network namespace and the other end will be connected to a bridge. The end within a namespace will have a meaning full beginning such as qg (for the gateway connection) or qr (router connection to the network) inside the qrouter interface. On the compute node tap interfaces connect to the VM an to a Linux Bridge. In this set up one or more VMs will connect to the bridge with a VXLAN tunnel connection. Each VXLAN tunnel connection represents a separate network and has a unique tunnel id (vni).
+#HA router functional description 
 
-Linux Bridge names take the form of a prefix of brq followed by the first 10 characters of the network id (includes the -). The tap interfaces in the bridges are one half of an virtual ethernet pair of the form tap followed by the first 11 characters of the port id (includes the -). The other end of the veth pair will be inside one of the network namespaces. The UUID part of the tap interface will be used as the last part of interface within a namespace.
+The network implementation in this example uses Linux Bridge as the ML2 agent and VXLAN as the network segmentation technology. Refer to the network node illustration for for help in understanding the following discussion.
 
-The following namespaces are created on the network node:
-qdhcp-<network id>: dhcp namespace - one is created for each tenant network on compute nodes the have a VM connected to the network. There is a dnsmasq process running within the namespace to hand out IPs to VMs on a network. With in this namespace interfaces using ns-<port id first 10 char> with the other end of the veth pair connected to the bridge containing a connection to the router and a VXLAN interface with tunnel id assigned to the network. There is a dnsmasq process running within the namespace to hand out IPs to VMs on a network.
+Upon creation of a network, router namespaces are built, with the number of routers namespaces built per network determined by the settings for max_l3_agents_per_router and min_l3_agents_per_router. Each tenant is limited to a total of 255 HA routers so the max L3 routers variable should not be a large number. These namespaces are created on different network nodes running an L3 agent with a L3 router within each namespace. The neutron scheduler, running on the controller node, will determine which network nodes will be selected to receive the router namespaces. As shown in the illustration, a keepalived and a conntrackd process will be created to control which router namespace has the router IPs, as these can exist on only one of the routers.
 
-qrouter-<router id>: router namespace - each tenant can create routes, HA routers are created for tenants on network nodes.  at least min_l3_agents_per_router routers are created on various network node (only one per network node) and no more than max_l3_agents_per_router routers are created. A keepalived process runs within the namespace and communicates with the other keepalived processes for this tenant 's HA routers.
-
-Three different types of interfaces can be found within the qrouter namespace. One named ha-<port id 10 chars> that connects to a bridge having a VXLAN interface tunnel id of the HA network for vrrp communication between routers. A qg-<port id 10 chars> interface which connects to a br-ex bridge and to the outside network. A qr-<port id 10 chars> which connects to the bridge containing the connection to the DHCP namespace and the VXLAN tunnel for the network.
-
-The bridges created on the network node take the form of brq<network id 10 chars>
-
-There are no namespaces created on the compute nodes but there is a bridge for each network that connects to a VM residing on the compute node. 
-
-Namespaces on network nodes:
-active network node:
-
+Show networks:
 ```
-root@network neutron#ip netns exec qrouter-5e9b2a5f-4431-48a0-ad31-a46c987506cf ip a
+neutron net-list
++--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
+| id                                   | name                                               | subnets                                               |
++--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
+| 4bc242e0-97c4-4791-908d-7c471fc10ad1 | private1                                           | cc605c67-3e0b-4127-9eb2-4e4d0e5e589d 10.2.0.0/28      |
+| b304e495-b80d-4dd7-9345-5455302397a7 | HA network tenant f8207c03fd1e4b4aaf123efea4662819 | bbb53715-f4e9-4ce3-bf2b-44b2aed2f4ef 169.254.192.0/18 |
+| d990778b-49ea-4beb-9336-6ea2248edf7d | private                                            | b7fe4e86-65d5-4e88-8266-88795ae4ac53 10.1.0.0/28      |
+| fde31a29-3e23-470d-bc9d-6218375dca4f | public                                             | 2e1d865a-ef56-41e9-aa31-63fb8a591003 172.16.0.0/24    |
++--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
+```
+
+
+The keepalived processes for each router communicate with each other through an HA network which is also created at this time. The HA network name will use take the form ha-<tennant UUID> and can be seen by running neutron net-list. An HA port is generated for each router namespace along with a veth pair on the network nodes hosting the router namespace, where one veth member, with the name ha-<left most 11 characters of the port UUID>, placed into the router namespace and the other veth pair member, with the name tap<left most 11 characters of the port UUID>, placed into a Linux bridge, named brg<Left most 11 chars of the HA network UUID>. A VXLAN interface using the HA network segmentation ID is added to the Linux bridge to complete the communication path. The interface within the router namespace is assigned the IP range of 169.254.???.???/24, where the third octet of the IP is unique to each tenant and the forth octet unique to each ha interface.  The keepalived processes within each router namespace will communicate with each other using vrrp and elect a master router. The master router then adds all of the router VIPs (gateway IPs and external IP) to its interfaces and all other routers are placed into backup mode.
+
+Show network node qrouter namespace on the master node:
+```
+ip netns exec qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2 ip a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
     inet6 ::1/128 scope host 
        valid_lft forever preferred_lft forever
-2: ha-9c3955a7-32: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:10:4d:61 brd ff:ff:ff:ff:ff:ff
-    inet 169.254.192.12/18 brd 169.254.255.255 scope global ha-9c3955a7-32
+2: ha-0d039391-92: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether fa:16:3e:d9:c0:7c brd ff:ff:ff:ff:ff:ff
+    inet 169.254.192.6/18 brd 169.254.255.255 scope global ha-0d039391-92
        valid_lft forever preferred_lft forever
-    inet6 fe80::f816:3eff:fe10:4d61/64 scope link 
+    inet6 fe80::f816:3eff:fed9:c07c/64 scope link 
        valid_lft forever preferred_lft forever
-3: qr-88c5895b-17: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:6d:54:62 brd ff:ff:ff:ff:ff:ff
-    inet 10.2.0.1/28 scope global qr-88c5895b-17
+3: qr-670e2e87-5f: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether fa:16:3e:70:69:40 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::f816:3eff:fe70:6940/64 scope link 
        valid_lft forever preferred_lft forever
-    inet6 fe80::f816:3eff:fe6d:5462/64 scope link 
+4: qr-158c1d10-c5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether fa:16:3e:c4:7a:4b brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::f816:3eff:fec4:7a4b/64 scope link 
        valid_lft forever preferred_lft forever
-4: qr-b4a07ce5-34: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:ae:b8:65 brd ff:ff:ff:ff:ff:ff
-    inet 10.1.0.1/28 scope global qr-b4a07ce5-34
-       valid_lft forever preferred_lft forever
-    inet6 fe80::f816:3eff:feae:b865/64 scope link 
-       valid_lft forever preferred_lft forever
-5: qg-f454eff8-ea: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:37:3e:a9 brd ff:ff:ff:ff:ff:ff
-    inet 172.16.0.32/24 scope global qg-f454eff8-ea
-       valid_lft forever preferred_lft forever
-    inet6 fe80::f816:3eff:fe37:3ea9/64 scope link 
+5: qg-a41a7d54-94: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether fa:16:3e:c9:fc:13 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::f816:3eff:fec9:fc13/64 scope link 
        valid_lft forever preferred_lft forever
 ```
-
+Show network node qrouter namespace on the backup node:
 ```
-root@network:neutron# ip netns exec qdhcp-31d70a48-007b-43e2-ae15-58e462c2a2d4 ip a
+ip netns exec qrouter-557bf478-6afe-48af-872f-63513f7e9b92 ip a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
     inet6 ::1/128 scope host 
        valid_lft forever preferred_lft forever
-2: ns-c45d79b0-8a: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:8a:5f:a5 brd ff:ff:ff:ff:ff:ff
-    inet 10.2.0.5/28 brd 10.2.0.15 scope global ns-c45d79b0-8a
+2: ha-602e7d30-71: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether fa:16:3e:dd:8b:30 brd ff:ff:ff:ff:ff:ff
+    inet 169.254.192.3/18 brd 169.254.255.255 scope global ha-602e7d30-71
        valid_lft forever preferred_lft forever
-    inet6 fe80::f816:3eff:fe8a:5fa5/64 scope link 
+    inet6 fe80::f816:3eff:fedd:8b30/64 scope link 
        valid_lft forever preferred_lft forever
-```
-
-```
-
-root@network:neutron#ip netns exec qdhcp-12403865-de58-4cd2-9b8a-54242813387a ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
+3: qr-4cb8f7ea-28: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether fa:16:3e:c9:74:0c brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::f816:3eff:fec9:740c/64 scope link 
        valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
+4: qr-df9c2f7b-37: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether fa:16:3e:87:60:5e brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::f816:3eff:fe87:605e/64 scope link 
        valid_lft forever preferred_lft forever
-2: ns-22e35cc9-7c: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:c8:45:3e brd ff:ff:ff:ff:ff:ff
-    inet 10.1.0.5/28 brd 10.1.0.15 scope global ns-22e35cc9-7c
-       valid_lft forever preferred_lft forever
-    inet6 fe80::f816:3eff:fec8:453e/64 scope link 
+5: qg-ad2929f6-dd: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether fa:16:3e:58:2e:10 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::f816:3eff:fe58:2e10/64 scope link 
        valid_lft forever preferred_lft forever
 ```
-
-passive network node:
-
+Network node Linux bridges:
 ```
-root@network2:~# ip netns exec qrouter-5e9b2a5f-4431-48a0-ad31-a46c987506cf ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
-       valid_lft forever preferred_lft forever
-2: ha-cea5241d-c6: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:2e:f3:64 brd ff:ff:ff:ff:ff:ff
-    inet 169.254.192.11/18 brd 169.254.255.255 scope global ha-cea5241d-c6
-       valid_lft forever preferred_lft forever
-    inet6 fe80::f816:3eff:fe2e:f364/64 scope link 
-       valid_lft forever preferred_lft forever
-3: qr-88c5895b-17: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:6d:54:62 brd ff:ff:ff:ff:ff:ff
-    inet6 fe80::f816:3eff:fe6d:5462/64 scope link 
-       valid_lft forever preferred_lft forever
-4: qr-b4a07ce5-34: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:ae:b8:65 brd ff:ff:ff:ff:ff:ff
-    inet6 fe80::f816:3eff:feae:b865/64 scope link 
-       valid_lft forever preferred_lft forever
-5: qg-f454eff8-ea: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:37:3e:a9 brd ff:ff:ff:ff:ff:ff
-    inet6 fe80::f816:3eff:fe37:3ea9/64 scope link 
-       valid_lft forever preferred_lft forever
-```
-
-```
-root@network2:~# ip netns exec qdhcp-31d70a48-007b-43e2-ae15-58e462c2a2d4 ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
-       valid_lft forever preferred_lft forever
-2: ns-eeae1a2d-73: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:f3:4e:9b brd ff:ff:ff:ff:ff:ff
-    inet 10.2.0.12/28 brd 10.2.0.15 scope global ns-eeae1a2d-73
-       valid_lft forever preferred_lft forever
-    inet6 fe80::f816:3eff:fef3:4e9b/64 scope link 
-       valid_lft forever preferred_lft forever
-```
-
-```
-
-root@network2:~# ip netns exec qdhcp-12403865-de58-4cd2-9b8a-54242813387a ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
-       valid_lft forever preferred_lft forever
-2: ns-694214e8-de: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether fa:16:3e:10:ec:b2 brd ff:ff:ff:ff:ff:ff
-    inet 10.1.0.10/28 brd 10.1.0.15 scope global ns-694214e8-de
-       valid_lft forever preferred_lft forever
-    inet6 fe80::f816:3eff:fe10:ecb2/64 scope link 
-       valid_lft forever preferred_lft forever
-```
-
-
-
-Bridges:
-
-```
-root@compute:~# brctl show
+brctl show
 bridge name     bridge id               STP enabled     interfaces
-brq12403865-de          8000.8214a2c57357       no              tap60f331f3-93
-                                                        vxlan-100
-brq31d70a48-00          8000.0e5f0586b7e1       no              tap05f826bb-36
+brq4bc242e0-97          8000.2eefb68bea30       no              tap158c1d10-c5
+                                                        tap4310e4c7-de
                                                         vxlan-101
-
-root@compute2:~# brctl show
-bridge name     bridge id               STP enabled     interfaces
-brq12403865-de          8000.7a377112338a       no              tap1f195af4-06
+brqb304e495-b8          8000.921bf69da9dd       no              tap0d039391-92
+                                                        vxlan-102
+brqd990778b-49          8000.1a5ce98d92e2       no              tap670e2e87-5f
+                                                        tapc5914ae6-d1
                                                         vxlan-100
-brq31d70a48-00          8000.cea556aaf768       no              tap573f98a9-44
-                                                        vxlan-101
-
-root@network:~/neutron# brctl show
-bridge name     bridge id               STP enabled     interfaces
-br-ex           8000.f6455b3a27bb       no              vethOVS
-brq12403865-de          8000.123946501ed3       no              tap22e35cc9-7c
-                                                        tapb4a07ce5-34
-                                                        vxlan-100
-brq31d70a48-00          8000.12380ffdb3f9       no              tap88c5895b-17
-                                                        tapc45d79b0-8a
-                                                        vxlan-101
-brq81d536ac-59          8000.5edb026d2da7       no              tap9c3955a7-32
-                                                        vxlan-103
-
-root@network2:~# brctl show
-bridge name     bridge id               STP enabled     interfaces
-br-ex           8000.a297dab8f1bb       no              vethOVS
-brq12403865-de          8000.66ee80112598       no              tap694214e8-de
-                                                        tapb4a07ce5-34
-                                                        vxlan-100
-brq31d70a48-00          8000.0e55cbef557d       no              tap88c5895b-17
-                                                        tapeeae1a2d-73
-                                                        vxlan-101
-brq81d536ac-59          8000.c68253ec4110       no              tapcea5241d-c6
-                                                        vxlan-103
+brqfde31a29-3e          8000.eebd5cd87645       no              eth2
+                                                        tapa41a7d54-94
 ```
+
+VRRP communication from one netwoek node to the other:
+```
+ip netns exec qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2 tcpdump -e -n -vvv -l -i ha-0d039391-92
+tcpdump: listening on ha-0d039391-92, link-type EN10MB (Ethernet), capture size 65535 bytes
+16:00:39.994393 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36898, offset 0, flags [none], proto VRRP (112), length 40)
+    169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+16:00:41.995826 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36899, offset 0, flags [none], proto VRRP (112), length 40)
+    169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+16:00:43.997403 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36900, offset 0, flags [none], proto VRRP (112), length 40)
+    169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+16:00:45.998820 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36901, offset 0, flags [none], proto VRRP (112), length 40)
+    169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+```
+
+The keepalived processes for a set of HA routers then monitor each other using VRRP multicasts. If the master router fails, it is detected due to a loss of its VRRP multicasts, a new master router will be elected and the VIPs are moved onto the new master router. When a failure occurs the conntrackd processes ensure that any existing TCP connection states exist on all of the backup routers so that the connections migrate smoothly over to the new master router preventing connection loss.
+
+
+#Packet Flow through Linux bridge HA router environment 
+
+Packet flow through HA routers is identical to the path used in the Linux bridge using a single router. The master HA router will be the same as the single router. See that section for more details.
 
 
 
