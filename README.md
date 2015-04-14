@@ -25,7 +25,7 @@ minor modifications to the example configuration.
 **Warning: Linux bridge HA routers are currently broken when using
 L2Population. This means that Linux bridge and VXLAN does not work.
 
-bug - ????
+bug - https://bugs.launchpad.net/neutron/+bug/1365476, https://bugs.launchpad.net/neutron/+bug/1411752
 
 **For best operation, consider using the *master* branch of neutron:**
 
@@ -77,18 +77,19 @@ http://git.openstack.org/cgit/openstack/neutron/
 
 The general HA architecture augments the legacy architecture by
 creating additional 'qrouter' namespaces for each router created.
-An "HA" network is created and connecting between each qrouter namespace.
-A keepalived process is created within each namepspace to manage
-which namespace router will be the master and applies the gateway IP
-as a VIP into the master namespace. If a failure is detected a new
-master is elected and the VIPs are moved into the new master namespace.
+An "HA" network is created which connects each qrouter namespace.
+A keepalived process is created within each namespace. The keepalived
+processes will commumicate with one namespace router selected as the master
+and the the gateway IP is used as a VIP in the master namespace.
+If a failure is detected a new master will be elected and the VIPs 
+are moved into the new master namespace.
 
 ![Neutron HA router Scenario - Architecture Overview](../common/images/networkguide-neutron-dvr-general.png "Neutron HA router Scenario - Architecture Overview")
 
 The network node runs the L3 agent, DHCP agent, and metadata agent. HA 
 routers can coexist with multiple DHCP agents. DHCP agents can even run
 on compute nodes. In addition to `qrouter` namespaces, the L3 agent 
-manages SNAT for any instances without a floating IP address and well as
+manages SNAT for any instances without a floating IP address as well as
 floating IPs within the namespace. The metadata agent handles metadata
 operations for instances using tenant networks on HA routers.
 
@@ -162,7 +163,7 @@ System environment:
 
 ## Configuration:
 
-The configuration files on each node, controller, network, compute, are similar with only the local_ip set to the interface on the data network. The crucial settings are indicated as follows:
+The configuration files on each node, controller, network, compute, are similar with only the local_ip set to the interface on the data network for that node. The crucial settings are indicated as follows:
 
 1. Configure the base options
 
