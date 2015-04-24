@@ -19,7 +19,7 @@ minor modifications to the example configuration.
 1. At least two compute nodes with two network interfaces: management
    and instance tunnels.
 
-![Neutron HA Router  Scenario - Network Layout](images/HALBopenstack.png "Neutron HA Router Scenario - Network Layout")
+![Neutron HA Router  Scenario - Network Layout](images/scenario-l3hw-hw.png "Neutron HA Router Scenario - Network Layout")
 
 
 **Warning: Linux bridge HA routers are currently broken when using
