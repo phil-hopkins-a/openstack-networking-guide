@@ -192,29 +192,28 @@ Configuration
 The configuration files on each node, controller, network, compute, are similar with only the local_ip set to the interface on the data network for that node. The crucial settings are indicated as follows:
 
 1. Configure the base options Edit the :file:`/etc/neutron/neutron.conf` file:
-    ::
-      [DEFAULT]
-      verbose = True
-      core_plugin = ml2
-      service_plugins = router
-      allow_overlapping_ips = True
+   ::
+     [DEFAULT]
+     verbose = True
+     core_plugin = ml2
+     service_plugins = router
+     allow_overlapping_ips = True
 
-      dhcp_agents_per_network = 2
+     dhcp_agents_per_network = 2
       
-      router_distributed = False
-      l3_ha = True
-      max_l3_agents_per_router = 3
-      min_l3_agents_per_router = 2
-      l3_ha_net_cidr = 169.254.192.0/18
-      notify_nova_on_port_status_changes = True
-      notify_nova_on_port_data_changes = True
-      nova_url = http://controller:8774/v2
-      nova_region_name = regionOne
-      nova_admin_username = NOVA_ADMIN_USERNAME
-      nova_admin_tenant_id = NOVA_ADMIN_TENANT_ID
-      nova_admin_password =  NOVA_ADMIN_PASSWORD
-      nova_admin_auth_url = http://controller:35357/v2.0
-
+     router_distributed = False
+     l3_ha = True
+     max_l3_agents_per_router = 3
+     min_l3_agents_per_router = 2
+     l3_ha_net_cidr = 169.254.192.0/18
+     notify_nova_on_port_status_changes = True
+     notify_nova_on_port_data_changes = True
+     nova_url = http://controller:8774/v2
+     nova_region_name = regionOne
+     nova_admin_username = NOVA_ADMIN_USERNAME
+     nova_admin_tenant_id = NOVA_ADMIN_TENANT_ID
+     nova_admin_password =  NOVA_ADMIN_PASSWORD
+     nova_admin_auth_url = http://controller:35357/v2.0
 
    .. note::
 
@@ -227,37 +226,36 @@ The configuration files on each node, controller, network, compute, are similar 
  
 #. Configure the ML2 plug-in. Edit the
    :file:`/etc/neutron/plugins/ml2/ml2_conf.ini` file:
-
    ::
-      [ml2]
-      type_drivers = flat,vxlan
-      tenant_network_types = vxlan
-      mechanism_drivers = linuxbridge,l2population
+     [ml2]
+     type_drivers = flat,vxlan
+     tenant_network_types = vxlan
+     mechanism_drivers = linuxbridge,l2population
 
-      [ml2_type_vxlan]
-      vni_ranges = 1:1000
-      vxlan_group = 239.1.1.1
+     [ml2_type_vxlan]
+     vni_ranges = 1:1000
+     vxlan_group = 239.1.1.1
 
-      [securitygroup]
-      enable_security_group = True
-      enable_ipset = True
-      firewall_driver = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
+     [securitygroup]
+     enable_security_group = True
+     enable_ipset = True
+     firewall_driver = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
       
-      [ml2_type_vlan]
-      network_vlan_ranges = vlan:1:1000
+     [ml2_type_vlan]
+     network_vlan_ranges = vlan:1:1000
 
-      [ml2_type_gre]
-      tunnel_id_ranges = 1:1000
+     [ml2_type_gre]
+     tunnel_id_ranges = 1:1000
       
-      [linuxbridge]
+     [linuxbridge]
 
-      [l2pop]
-      agent_boot_time = 180
+     [l2pop]
+     agent_boot_time = 180
 
-      [vxlan]
-      enable_vxlan = True
-      local_ip = TUNNEL_NETWORK_INTERFACE_IP
-      l2_population = True
+     [vxlan]
+     enable_vxlan = True
+     local_ip = TUNNEL_NETWORK_INTERFACE_IP
+     l2_population = True
       
   .. note::
       The first value in the 'tenant_network_types' option becomes the
