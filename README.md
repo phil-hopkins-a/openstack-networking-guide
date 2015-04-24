@@ -93,14 +93,14 @@ manages SNAT for any instances without a floating IP address as well as
 floating IPs within the namespace. The metadata agent handles metadata
 operations for instances using tenant networks on HA routers.
 
-![Neutron HA router Scenario - Network Node Overview](./images/scenario-l3ha-lb-network2.png "Neutron HA router Scenario - Network Node Overview")
+![Neutron HA router Scenario - Network Node Overview](./images/scenario-l3ha-lb-network1.png "Neutron HA router Scenario - Network Node Overview")
 
 The compute node runs the L2 Linux bridge agent. Using a separate Linux 
 bridge for each network, virtual ethernet pairs connect the VM to the
 bridge for a network. A tunnel or VLAN interface is also connected to the
 bridge to connect to the data network interface.
 
-![Neutron HA router Scenario - Compute Node Overview](./images/scenario-l3ha-lb-compute2.png "Neutron HA router Scenario - Compute Node Overview")
+![Neutron HA router Scenario - Compute Node Overview](./images/scenario-l3ha-lb-compute1.png "Neutron HA router Scenario - Compute Node Overview")
 
 ### Components
 
@@ -128,7 +128,7 @@ The network node contains the following components:
   1. The metadata agent handles metadata operations for instances
      using tenant networks using HA routers.
 
-![Neutron HA router Scenario - Network Node Components](../common/images/networkguide-neutron-dvr-network2.png "Neutron HA router Scenario - Network Node Components")
+![Neutron HA router Scenario - Network Node Components](./images/scenario-l3ha-lb-network2.png "Neutron HA router Scenario - Network Node Components")
 
 The compute nodes contain the following components:
 
@@ -155,6 +155,8 @@ The compute nodes contain the following components:
 
   1. The Networking service uses iptables to manage security groups for
      instances.
+     
+![Neutron HA router Scenario - Compute Node Components](./images/scenario-l3ha-lb-compute2.png "Neutron HA router Scenario - Compute Node Components")
 
 
 System environment:
