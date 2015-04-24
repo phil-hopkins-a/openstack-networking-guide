@@ -69,7 +69,7 @@ http://git.openstack.org/cgit/openstack/neutron/
   1. ML2 plug-in, Linux bridge agent and any dependencies including the `ipset` and
      `conntrack` utilities.
 
-![Neutron HA router Scenario - Service Layout](../common/images/networkguide-neutron-dvr-services.png "Neutron HA router Scenario - Service Layout")
+![Neutron HA router Scenario - Service Layout](../common/images/scenario-l3ha-lb-services.png "Neutron HA router Scenario - Service Layout")
 
 ## Architecture
 
