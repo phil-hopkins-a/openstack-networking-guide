@@ -389,7 +389,6 @@ Tenant (VXLAN) network
      +---------------------------+--------------------------------------+
    
 #. Create a subnet on the tenant network:
-
    ::
      $ neutron subnet-create --name private-subnet private 10.1.0.0/28
      Created a new subnet:
@@ -412,7 +411,6 @@ Tenant (VXLAN) network
      +-------------------+-------------------------------------------+
 
 #. Create a tenant HA router:
-   
    ::
    $ neutron router-create MyRouter --distributed False --ha True
    Created a new router:
@@ -430,26 +428,23 @@ Tenant (VXLAN) network
    | tenant_id             | f8207c03fd1e4b4aaf123efea4662819     |
    +-----------------------+--------------------------------------+
 
-#. Add the tennat subnet interface to the router:
-
+#. Add the tenant subnet interface to the router:
    ::
    neutron router-interface-add MyRouter private-subnet
    Added interface 4cb8f7ea-28f2-4fe1-91f7-1c2823994fc4 to router MyRouter.
 
 #. Set the router gateway to the external network:
-
    ::
    $ neutron router-gateway-set MyRouter public
    Set gateway for router MyRouter
 
-   ```
-   1. Namespaces created on the network nodes:
-   ```
+#. Namespaces created on the network nodes:
+   ::
    $ ip netns
    qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2
    qdhcp-4bc242e0-97c4-4791-908d-7c471fc10ad1
    qdhcp-d990778b-49ea-4beb-9336-6ea2248edf7d
-   ```
+
 
 HA router functional description
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -460,7 +455,8 @@ Upon creation of a network, router namespaces are built, with the number of rout
 
 Verify Operation
 ~~~~~~~~~~~~~~~~
-Show networks and verify the creation of the HA network:
+
+ Show networks and verify the creation of the HA network:
    ::
    neutron net-list
    +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
@@ -474,8 +470,7 @@ Show networks and verify the creation of the HA network:
 1. On the network nodes, verify creation of the ``qrouter`` and ``qdhcp``
    namespaces:
 
-   Network node 1:
-
+ Network node 1:
    ::
 
    $ ip netns
@@ -483,8 +478,7 @@ Show networks and verify the creation of the HA network:
    qdhcp-4bc242e0-97c4-4791-908d-7c471fc10ad1
    qdhcp-d990778b-49ea-4beb-9336-6ea2248edf7d
 
-   Network node 2:
-
+ Network node 2:
    ::
 
    $ ip netns
