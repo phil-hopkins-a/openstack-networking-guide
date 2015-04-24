@@ -260,13 +260,11 @@ The configuration files on each node, controller, network, compute, are similar 
       l2_population = True
       
   .. note::
-
       The first value in the 'tenant_network_types' option becomes the
       default tenant network type when a non-privileged user creates a
       network.
 
   .. note::
-
       Adjust the VXLAN tunnel ID range for your environment.
 
 #. Start the following services: 
@@ -289,21 +287,21 @@ Verify service operation
 
 #. Verify presence and operation of the agents
    ::
-    $ neutron agent-list
-    +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
-    | id                                   | agent_type         | host     | alive | admin_state_up | binary                    |
-    +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
-    | 7856ba29-5447-4392-b2e1-2c236bd5f479 | Metadata agent     | network  | :-)   | True           | neutron-metadata-agent    |
-    | 85d5c715-08f6-425d-9efc-73633736bf06 | Linux bridge agent | network2 | :-)   | True           | neutron-linuxbridge-agent |
-    | 98d32a4d-1257-4b42-aea4-ad9bd7deea62 | Metadata agent     | network2 | :-)   | True           | neutron-metadata-agent    |
-    | b45096a1-7bfa-4816-8b3c-900b752a9c08 | DHCP agent         | network  | :-)   | True           | neutron-dhcp-agent        |
-    | d4c45b8e-3b34-4192-80b1-bbdefb110c3f | Linux bridge agent | compute2 | :-)   | True           | neutron-linuxbridge-agent |
-    | e5a4e06b-dd9d-4b97-a09a-c8ba07706753 | Linux bridge agent | network  | :-)   | True           | neutron-linuxbridge-agent |
-    | e8f8b228-5c3e-4378-b8f5-36b5c41cb3fe | L3 agent           | network2 | :-)   | True           | neutron-l3-agent          |
-    | f2d10c26-2136-4e6a-86e5-d22f67ab22d7 | Linux bridge agent | compute  | :-)   | True           | neutron-linuxbridge-agent |
-    | f9f94732-08af-4f82-8908-fdcd69ab12e8 | L3 agent           | network  | :-)   | True           | neutron-l3-agent          |
-    | fbeebad9-6590-4f78-bb29-7d58ea867878 | DHCP agent         | network2 | :-)   | True           | neutron-dhcp-agent        |
-    +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
+     $ neutron agent-list
+     +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
+     | id                                   | agent_type         | host     | alive | admin_state_up | binary                    |
+     +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
+     | 7856ba29-5447-4392-b2e1-2c236bd5f479 | Metadata agent     | network  | :-)   | True           | neutron-metadata-agent    |
+     | 85d5c715-08f6-425d-9efc-73633736bf06 | Linux bridge agent | network2 | :-)   | True           | neutron-linuxbridge-agent |
+     | 98d32a4d-1257-4b42-aea4-ad9bd7deea62 | Metadata agent     | network2 | :-)   | True           | neutron-metadata-agent    |
+     | b45096a1-7bfa-4816-8b3c-900b752a9c08 | DHCP agent         | network  | :-)   | True           | neutron-dhcp-agent        |
+     | d4c45b8e-3b34-4192-80b1-bbdefb110c3f | Linux bridge agent | compute2 | :-)   | True           | neutron-linuxbridge-agent |
+     | e5a4e06b-dd9d-4b97-a09a-c8ba07706753 | Linux bridge agent | network  | :-)   | True           | neutron-linuxbridge-agent |
+     | e8f8b228-5c3e-4378-b8f5-36b5c41cb3fe | L3 agent           | network2 | :-)   | True           | neutron-l3-agent          |
+     | f2d10c26-2136-4e6a-86e5-d22f67ab22d7 | Linux bridge agent | compute  | :-)   | True           | neutron-linuxbridge-agent |
+     | f9f94732-08af-4f82-8908-fdcd69ab12e8 | L3 agent           | network  | :-)   | True           | neutron-l3-agent          |
+     | fbeebad9-6590-4f78-bb29-7d58ea867878 | DHCP agent         | network2 | :-)   | True           | neutron-dhcp-agent        |
+     +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
   
   
 Create initial networks
@@ -341,7 +339,6 @@ External (flat) network
 #. Create a subnet on the external network:
 
    ::
-
       $ neutron subnet-create ext-net --name ext-subnet \
         --allocation-pool start=203.0.113.101,end=203.0.113.200 \
         --disable-dhcp --gateway 203.0.113.1 203.0.113.0/24
@@ -412,38 +409,38 @@ Tenant (VXLAN) network
 
 #. Create a tenant HA router:
    ::
-   $ neutron router-create MyRouter --distributed False --ha True
-   Created a new router:
-   +-----------------------+--------------------------------------+
-   | Field                 | Value                                |
-   +-----------------------+--------------------------------------+
-   | admin_state_up        | True                                 |
-   | distributed           | False                                |
-   | external_gateway_info |                                      |
-   | ha                    | True                                 |
-   | id                    | 557bf478-6afe-48af-872f-63513f7e9b92 |
-   | name                  | MyRouter                             |
-   | routes                |                                      |
-   | status                | ACTIVE                               |
-   | tenant_id             | f8207c03fd1e4b4aaf123efea4662819     |
-   +-----------------------+--------------------------------------+
+     $ neutron router-create MyRouter --distributed False --ha True
+     Created a new router:
+     +-----------------------+--------------------------------------+
+     | Field                 | Value                                |
+     +-----------------------+--------------------------------------+
+     | admin_state_up        | True                                 |
+     | distributed           | False                                |
+     | external_gateway_info |                                      |
+     | ha                    | True                                 |
+     | id                    | 557bf478-6afe-48af-872f-63513f7e9b92 |
+     | name                  | MyRouter                             |
+     | routes                |                                      |
+     | status                | ACTIVE                               |
+     | tenant_id             | f8207c03fd1e4b4aaf123efea4662819     |
+     +-----------------------+--------------------------------------+
 
 #. Add the tenant subnet interface to the router:
    ::
-   neutron router-interface-add MyRouter private-subnet
-   Added interface 4cb8f7ea-28f2-4fe1-91f7-1c2823994fc4 to router MyRouter.
+     neutron router-interface-add MyRouter private-subnet
+     Added interface 4cb8f7ea-28f2-4fe1-91f7-1c2823994fc4 to router MyRouter.
 
 #. Set the router gateway to the external network:
    ::
-   $ neutron router-gateway-set MyRouter public
-   Set gateway for router MyRouter
+     $ neutron router-gateway-set MyRouter public
+     Set gateway for router MyRouter
 
 #. Namespaces created on the network nodes:
    ::
-   $ ip netns
-   qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2
-   qdhcp-4bc242e0-97c4-4791-908d-7c471fc10ad1
-   qdhcp-d990778b-49ea-4beb-9336-6ea2248edf7d
+     $ ip netns
+     qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2
+     qdhcp-4bc242e0-97c4-4791-908d-7c471fc10ad1
+     qdhcp-d990778b-49ea-4beb-9336-6ea2248edf7d
 
 
 HA router functional description
@@ -489,11 +486,9 @@ Network node 2:
 
 
    .. note::
-
       Both ``qrouter`` namespaces should use the same UUID.
 
    .. note::
-
       The ``qdhcp`` namespaces might not appear until launching an instance.
 
 
