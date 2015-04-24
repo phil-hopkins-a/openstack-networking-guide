@@ -456,7 +456,7 @@ Upon creation of a network, router namespaces are built, with the number of rout
 Verify Operation
 ~~~~~~~~~~~~~~~~
 
- Show networks and verify the creation of the HA network:
+Show networks and verify the creation of the HA network:
    ::
    neutron net-list
    +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
@@ -470,7 +470,7 @@ Verify Operation
 1. On the network nodes, verify creation of the ``qrouter`` and ``qdhcp``
    namespaces:
 
- Network node 1:
+Network node 1:
    ::
 
    $ ip netns
@@ -478,7 +478,7 @@ Verify Operation
    qdhcp-4bc242e0-97c4-4791-908d-7c471fc10ad1
    qdhcp-d990778b-49ea-4beb-9336-6ea2248edf7d
 
- Network node 2:
+Network node 2:
    ::
 
    $ ip netns
@@ -500,31 +500,31 @@ The keepalived processes for each router communicate with each other through an 
 
 #. Show network node qrouter namespace on the master node:
    ::
-  $ ip netns exec qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2 ip a
-  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
-      link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-      inet 127.0.0.1/8 scope host lo
-         valid_lft forever preferred_lft forever
-      inet6 ::1/128 scope host 
-         valid_lft forever preferred_lft forever
-  2: ha-0d039391-92: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-      link/ether fa:16:3e:d9:c0:7c brd ff:ff:ff:ff:ff:ff
-      inet 169.254.192.6/18 brd 169.254.255.255 scope global ha-0d039391-92
-         valid_lft forever preferred_lft forever
-      inet6 fe80::f816:3eff:fed9:c07c/64 scope link 
-         valid_lft forever preferred_lft forever
-  3: qr-670e2e87-5f: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-      link/ether fa:16:3e:70:69:40 brd ff:ff:ff:ff:ff:ff
-      inet6 fe80::f816:3eff:fe70:6940/64 scope link 
-         valid_lft forever preferred_lft forever
-  4: qr-158c1d10-c5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-      link/ether fa:16:3e:c4:7a:4b brd ff:ff:ff:ff:ff:ff
-      inet6 fe80::f816:3eff:fec4:7a4b/64 scope link 
-         valid_lft forever preferred_lft forever
-  5: qg-a41a7d54-94: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-      link/ether fa:16:3e:c9:fc:13 brd ff:ff:ff:ff:ff:ff
-      inet6 fe80::f816:3eff:fec9:fc13/64 scope link 
-         valid_lft forever preferred_lft forever
+     $ ip netns exec qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2 ip a
+     1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
+         link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+         inet 127.0.0.1/8 scope host lo
+            valid_lft forever preferred_lft forever
+         inet6 ::1/128 scope host 
+            valid_lft forever preferred_lft forever
+     2: ha-0d039391-92: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+         link/ether fa:16:3e:d9:c0:7c brd ff:ff:ff:ff:ff:ff
+         inet 169.254.192.6/18 brd 169.254.255.255 scope global ha-0d039391-92
+            valid_lft forever preferred_lft forever
+         inet6 fe80::f816:3eff:fed9:c07c/64 scope link 
+            valid_lft forever preferred_lft forever
+     3: qr-670e2e87-5f: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+         link/ether fa:16:3e:70:69:40 brd ff:ff:ff:ff:ff:ff
+         inet6 fe80::f816:3eff:fe70:6940/64 scope link 
+            valid_lft forever preferred_lft forever
+     4: qr-158c1d10-c5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+         link/ether fa:16:3e:c4:7a:4b brd ff:ff:ff:ff:ff:ff
+         inet6 fe80::f816:3eff:fec4:7a4b/64 scope link 
+            valid_lft forever preferred_lft forever
+     5: qg-a41a7d54-94: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+         link/ether fa:16:3e:c9:fc:13 brd ff:ff:ff:ff:ff:ff
+         inet6 fe80::f816:3eff:fec9:fc13/64 scope link 
+            valid_lft forever preferred_lft forever
 
 #. Show network node qrouter namespace on the backup node:
    ::
