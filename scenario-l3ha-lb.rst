@@ -474,18 +474,18 @@ Show networks and verify the creation of the HA network:
 Network node 1:
    ::
 
-   $ ip netns
-   qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2
-   qdhcp-4bc242e0-97c4-4791-908d-7c471fc10ad1
-   qdhcp-d990778b-49ea-4beb-9336-6ea2248edf7d
+     $ ip netns
+     qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2
+     qdhcp-4bc242e0-97c4-4791-908d-7c471fc10ad1
+     qdhcp-d990778b-49ea-4beb-9336-6ea2248edf7d
 
 Network node 2:
    ::
 
-   $ ip netns
-   qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2
-   qdhcp-4bc242e0-97c4-4791-908d-7c471fc10ad1
-   qdhcp-d990778b-49ea-4beb-9336-6ea2248edf7d
+     $ ip netns
+     qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2
+     qdhcp-4bc242e0-97c4-4791-908d-7c471fc10ad1
+     qdhcp-d990778b-49ea-4beb-9336-6ea2248edf7d
 
 
    .. note::
