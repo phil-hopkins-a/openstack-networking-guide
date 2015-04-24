@@ -458,6 +458,7 @@ Verify Operation
 
 Show networks and verify the creation of the HA network:
    ::
+   
      $ neutron net-list
      +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
      | id                                   | name                                               | subnets                                               |
