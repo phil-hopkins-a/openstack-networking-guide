@@ -84,7 +84,7 @@ and the the gateway IP is used as a VIP in the master namespace.
 If a failure is detected a new master will be elected and the VIPs 
 are moved into the new master namespace.
 
-![Neutron HA router Scenario - Architecture Overview](../common/images/networkguide-neutron-dvr-general.png "Neutron HA router Scenario - Architecture Overview")
+![Neutron HA router Scenario - Architecture Overview](../common/images/scenario-l3ha-general.png "Neutron HA router Scenario - Architecture Overview")
 
 The network node runs the L3 agent, DHCP agent, and metadata agent. HA 
 routers can coexist with multiple DHCP agents. DHCP agents can even run
@@ -93,14 +93,14 @@ manages SNAT for any instances without a floating IP address as well as
 floating IPs within the namespace. The metadata agent handles metadata
 operations for instances using tenant networks on HA routers.
 
-![Neutron HA router Scenario - Network Node Overview](./images/netnodelb1.png "Neutron HA router Scenario - Network Node Overview")
+![Neutron HA router Scenario - Network Node Overview](./images/scenario-l3ha-lb-network2.png "Neutron HA router Scenario - Network Node Overview")
 
 The compute node runs the L2 Linux bridge agent. Using a separate Linux 
 bridge for each network, virtual ethernet pairs connect the VM to the
 bridge for a network. A tunnel or VLAN interface is also connected to the
 bridge to connect to the data network interface.
 
-![Neutron HA router Scenario - Compute Node Overview](./images/computenodelb1.png "Neutron HA router Scenario - Compute Node Overview")
+![Neutron HA router Scenario - Compute Node Overview](./images/scenario-l3ha-lb-compute2.png "Neutron HA router Scenario - Compute Node Overview")
 
 ### Components
 
