@@ -458,15 +458,15 @@ Verify Operation
 
 Show networks and verify the creation of the HA network:
    ::
-   neutron net-list
-   +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
-   | id                                   | name                                               | subnets                                               |
-   +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
-   | 4bc242e0-97c4-4791-908d-7c471fc10ad1 | private1                                           | cc605c67-3e0b-4127-9eb2-4e4d0e5e589d 10.2.0.0/28      |
-   | b304e495-b80d-4dd7-9345-5455302397a7 | HA network tenant f8207c03fd1e4b4aaf123efea4662819 | bbb53715-f4e9-4ce3-bf2b-44b2aed2f4ef 169.254.192.0/18 |
-   | d990778b-49ea-4beb-9336-6ea2248edf7d | private                                            | b7fe4e86-65d5-4e88-8266-88795ae4ac53 10.1.0.0/28      |
-   | fde31a29-3e23-470d-bc9d-6218375dca4f | public                                             | 2e1d865a-ef56-41e9-aa31-63fb8a591003 172.16.0.0/24    |
-   +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
+     $ neutron net-list
+     +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
+     | id                                   | name                                               | subnets                                               |
+     +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
+     | 4bc242e0-97c4-4791-908d-7c471fc10ad1 | private1                                           | cc605c67-3e0b-4127-9eb2-4e4d0e5e589d 10.2.0.0/28      |
+     | b304e495-b80d-4dd7-9345-5455302397a7 | HA network tenant f8207c03fd1e4b4aaf123efea4662819 | bbb53715-f4e9-4ce3-bf2b-44b2aed2f4ef 169.254.192.0/18 |
+     | d990778b-49ea-4beb-9336-6ea2248edf7d | private                                            | b7fe4e86-65d5-4e88-8266-88795ae4ac53 10.1.0.0/28      |
+     | fde31a29-3e23-470d-bc9d-6218375dca4f | public                                             | 2e1d865a-ef56-41e9-aa31-63fb8a591003 172.16.0.0/24    |
+     +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
 1. On the network nodes, verify creation of the ``qrouter`` and ``qdhcp``
    namespaces:
 
@@ -566,17 +566,17 @@ The keepalived processes for each router communicate with each other through an 
                                                           tapa41a7d54-94
 
 #. VRRP communication from one network node to the other:
-  ::
-     $ ip netns exec qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2 tcpdump -e -n -vvv -l -i ha-0d039391-92
-     tcpdump: listening on ha-0d039391-92, link-type EN10MB (Ethernet), capture size 65535 bytes
-     16:00:39.994393 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36898, offset 0, flags [none], proto VRRP (112), length 40)
-         169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
-     16:00:41.995826 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36899, offset 0, flags [none], proto VRRP (112), length 40)
-         169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
-     16:00:43.997403 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36900, offset 0, flags [none], proto VRRP (112), length 40)
-         169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
-     16:00:45.998820 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36901, offset 0, flags [none], proto VRRP (112), length 40)
-         169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+   ::
+      $ ip netns exec qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2 tcpdump -e -n -vvv -l -i ha-0d039391-92
+      tcpdump: listening on ha-0d039391-92, link-type EN10MB (Ethernet), capture size 65535 bytes
+      16:00:39.994393 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36898, offset 0, flags [none], proto VRRP (112), length 40)
+          169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+      16:00:41.995826 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36899, offset 0, flags [none], proto VRRP (112), length 40)
+          169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+      16:00:43.997403 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36900, offset 0, flags [none], proto VRRP (112), length 40)
+          169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+      16:00:45.998820 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36901, offset 0, flags [none], proto VRRP (112), length 40)
+          169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
 
 The keepalived processes for a set of HA routers then monitor each other using VRRP multicasts. If the master router fails, it is detected due to a loss of its VRRP multicasts, a new master router will be elected and the VIPs are moved onto the new master router. When a failure occurs the conntrackd processes ensure that any existing TCP connection states exist on all of the backup routers so that the connections migrate smoothly over to the new master router preventing connection loss.
 
