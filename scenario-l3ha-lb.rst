@@ -366,12 +366,9 @@ External (flat) network
 
 Tenant (VXLAN) network
 ----------------------
-
-
 1. Source the regular tenant credentials.
 
 #. Create a tenant network:
-
    ::
      $ neutron net-create private
      Created a new network:
