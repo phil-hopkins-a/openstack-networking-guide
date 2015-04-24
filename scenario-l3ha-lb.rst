@@ -192,9 +192,7 @@ Configuration
 The configuration files on each node, controller, network, compute, are similar with only the local_ip set to the interface on the data network for that node. The crucial settings are indicated as follows:
 
 1. Configure the base options Edit the :file:`/etc/neutron/neutron.conf` file:
-
     ::
-    
       [DEFAULT]
       verbose = True
       core_plugin = ml2
@@ -223,16 +221,14 @@ The configuration files on each node, controller, network, compute, are similar 
       Replace NOVA_ADMIN_USERNAME, NOVA_ADMIN_TENANT_ID, and
       NOVA_ADMIN_PASSWORD with suitable values for your environment.
       
-#. Edit the :file: `l3_agent.ini` file:
- 
+#. Edit the :file:`l3_agent.ini` file:
    ::
       agent_mode = legacy
  
 #. Configure the ML2 plug-in. Edit the
-   :file: `/etc/neutron/plugins/ml2/ml2_conf.ini` file:
+   :file:`/etc/neutron/plugins/ml2/ml2_conf.ini` file:
 
    ::
-   
       [ml2]
       type_drivers = flat,vxlan
       tenant_network_types = vxlan
@@ -275,15 +271,14 @@ The configuration files on each node, controller, network, compute, are similar 
 
 #. Start the following services: 
 
-1. Controller node:
-
+  1. Controller node:
       * Server
-#. Network node(s):
+  #. Network node(s):
       * Linux bridge agent
       * L3 agent
       * DHCP agent
       * Metadata agent
-#. Computer node(s):
+  #. Computer node(s):
       * Linux bridge agent
 
 
@@ -293,23 +288,22 @@ Verify service operation
 1. Source the administrative tenant credentials.
 
 #. Verify presence and operation of the agents
-
    ::
-  $ neutron agent-list
-  +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
-  | id                                   | agent_type         | host     | alive | admin_state_up | binary                    |
-  +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
-  | 7856ba29-5447-4392-b2e1-2c236bd5f479 | Metadata agent     | network  | :-)   | True           | neutron-metadata-agent    |
-  | 85d5c715-08f6-425d-9efc-73633736bf06 | Linux bridge agent | network2 | :-)   | True           | neutron-linuxbridge-agent |
-  | 98d32a4d-1257-4b42-aea4-ad9bd7deea62 | Metadata agent     | network2 | :-)   | True           | neutron-metadata-agent    |
-  | b45096a1-7bfa-4816-8b3c-900b752a9c08 | DHCP agent         | network  | :-)   | True           | neutron-dhcp-agent        |
-  | d4c45b8e-3b34-4192-80b1-bbdefb110c3f | Linux bridge agent | compute2 | :-)   | True           | neutron-linuxbridge-agent |
-  | e5a4e06b-dd9d-4b97-a09a-c8ba07706753 | Linux bridge agent | network  | :-)   | True           | neutron-linuxbridge-agent |
-  | e8f8b228-5c3e-4378-b8f5-36b5c41cb3fe | L3 agent           | network2 | :-)   | True           | neutron-l3-agent          |
-  | f2d10c26-2136-4e6a-86e5-d22f67ab22d7 | Linux bridge agent | compute  | :-)   | True           | neutron-linuxbridge-agent |
-  | f9f94732-08af-4f82-8908-fdcd69ab12e8 | L3 agent           | network  | :-)   | True           | neutron-l3-agent          |
-  | fbeebad9-6590-4f78-bb29-7d58ea867878 | DHCP agent         | network2 | :-)   | True           | neutron-dhcp-agent        |
-  +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
+    $ neutron agent-list
+    +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
+    | id                                   | agent_type         | host     | alive | admin_state_up | binary                    |
+    +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
+    | 7856ba29-5447-4392-b2e1-2c236bd5f479 | Metadata agent     | network  | :-)   | True           | neutron-metadata-agent    |
+    | 85d5c715-08f6-425d-9efc-73633736bf06 | Linux bridge agent | network2 | :-)   | True           | neutron-linuxbridge-agent |
+    | 98d32a4d-1257-4b42-aea4-ad9bd7deea62 | Metadata agent     | network2 | :-)   | True           | neutron-metadata-agent    |
+    | b45096a1-7bfa-4816-8b3c-900b752a9c08 | DHCP agent         | network  | :-)   | True           | neutron-dhcp-agent        |
+    | d4c45b8e-3b34-4192-80b1-bbdefb110c3f | Linux bridge agent | compute2 | :-)   | True           | neutron-linuxbridge-agent |
+    | e5a4e06b-dd9d-4b97-a09a-c8ba07706753 | Linux bridge agent | network  | :-)   | True           | neutron-linuxbridge-agent |
+    | e8f8b228-5c3e-4378-b8f5-36b5c41cb3fe | L3 agent           | network2 | :-)   | True           | neutron-l3-agent          |
+    | f2d10c26-2136-4e6a-86e5-d22f67ab22d7 | Linux bridge agent | compute  | :-)   | True           | neutron-linuxbridge-agent |
+    | f9f94732-08af-4f82-8908-fdcd69ab12e8 | L3 agent           | network  | :-)   | True           | neutron-l3-agent          |
+    | fbeebad9-6590-4f78-bb29-7d58ea867878 | DHCP agent         | network2 | :-)   | True           | neutron-dhcp-agent        |
+    +--------------------------------------+--------------------+----------+-------+----------------+---------------------------+
   
   
 Create initial networks
@@ -324,9 +318,7 @@ External (flat) network
 1. Source the administrative tenant credentials.
 
 #. Create the external network:
-
    ::
-
       $ neutron net-create ext-net --router:external True \
         --provider:physical_network external --provider:network_type flat
       Created a new network:
@@ -381,46 +373,46 @@ Tenant (VXLAN) network
 #. Create a tenant network:
 
    ::
-   $ neutron net-create private
-   Created a new network:
-   +---------------------------+--------------------------------------+
-   | Field                     | Value                                |
-   +---------------------------+--------------------------------------+
-   | admin_state_up            | True                                 |
-   | id                        | d990778b-49ea-4beb-9336-6ea2248edf7d |
-   | name                      | private                              |
-   | provider:network_type     | vxlan                                |
-   | provider:physical_network |                                      |
-   | provider:segmentation_id  | 100                                  |
-   | router:external           | False                                |
-   | shared                    | False                                |
-   | status                    | ACTIVE                               |
-   | subnets                   |                                      |
-   | tenant_id                 | f8207c03fd1e4b4aaf123efea4662819     |
-   +---------------------------+--------------------------------------+
-   ```
+     $ neutron net-create private
+     Created a new network:
+     +---------------------------+--------------------------------------+
+     | Field                     | Value                                |
+     +---------------------------+--------------------------------------+
+     | admin_state_up            | True                                 |
+     | id                        | d990778b-49ea-4beb-9336-6ea2248edf7d |
+     | name                      | private                              |
+     | provider:network_type     | vxlan                                |
+     | provider:physical_network |                                      |
+     | provider:segmentation_id  | 100                                  |
+     | router:external           | False                                |
+     | shared                    | False                                |
+     | status                    | ACTIVE                               |
+     | subnets                   |                                      |
+     | tenant_id                 | f8207c03fd1e4b4aaf123efea4662819     |
+     +---------------------------+--------------------------------------+
+   
 #. Create a subnet on the tenant network:
 
    ::
-   $ neutron subnet-create --name private-subnet private 10.1.0.0/28
-   Created a new subnet:
-   +-------------------+-------------------------------------------+
-   | Field             | Value                                     |
-   +-------------------+-------------------------------------------+
-   | allocation_pools  | {"start": "10.1.0.2", "end": "10.1.0.14"} |
-   | cidr              | 10.1.0.0/28                               |
-   | dns_nameservers   |                                           |
-   | enable_dhcp       | True                                      |
-   | gateway_ip        | 10.1.0.1                                  |
-   | host_routes       |                                           |
-   | id                | b7fe4e86-65d5-4e88-8266-88795ae4ac53      |
-   | ip_version        | 4                                         |
-   | ipv6_address_mode |                                           |
-   | ipv6_ra_mode      |                                           |
-   | name              | private-subnet                            |
-   | network_id        | d990778b-49ea-4beb-9336-6ea2248edf7d      |
-   | tenant_id         | f8207c03fd1e4b4aaf123efea4662819          |
-   +-------------------+-------------------------------------------+
+     $ neutron subnet-create --name private-subnet private 10.1.0.0/28
+     Created a new subnet:
+     +-------------------+-------------------------------------------+
+     | Field             | Value                                     |
+     +-------------------+-------------------------------------------+
+     | allocation_pools  | {"start": "10.1.0.2", "end": "10.1.0.14"} |
+     | cidr              | 10.1.0.0/28                               |
+     | dns_nameservers   |                                           |
+     | enable_dhcp       | True                                      |
+     | gateway_ip        | 10.1.0.1                                  |
+     | host_routes       |                                           |
+     | id                | b7fe4e86-65d5-4e88-8266-88795ae4ac53      |
+     | ip_version        | 4                                         |
+     | ipv6_address_mode |                                           |
+     | ipv6_ra_mode      |                                           |
+     | name              | private-subnet                            |
+     | network_id        | d990778b-49ea-4beb-9336-6ea2248edf7d      |
+     | tenant_id         | f8207c03fd1e4b4aaf123efea4662819          |
+     +-------------------+-------------------------------------------+
 
 #. Create a tenant HA router:
    
