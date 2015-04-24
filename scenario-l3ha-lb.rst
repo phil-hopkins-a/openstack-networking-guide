@@ -335,7 +335,6 @@ External (flat) network
       +---------------------------+--------------------------------------+
 
 #. Create a subnet on the external network:
-
    ::
       $ neutron subnet-create ext-net --name ext-subnet \
         --allocation-pool start=203.0.113.101,end=203.0.113.200 \
