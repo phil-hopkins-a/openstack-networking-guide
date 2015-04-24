@@ -159,10 +159,6 @@ The compute nodes contain the following components:
 ![Neutron HA router Scenario - Compute Node Components](./images/scenario-l3ha-lb-compute2.png "Neutron HA router Scenario - Compute Node Components")
 
 
-System environment:
-
-![Neutron HA Router on Linux bridge Environment](images/netlha.png "Neutron HA Router on Linux bridge Environment")
-
 ## Configuration:
 
 The configuration files on each node, controller, network, compute, are similar with only the local_ip set to the interface on the data network for that node. The crucial settings are indicated as follows:
@@ -529,6 +525,10 @@ The keepalived processes for a set of HA routers then monitor each other using V
 #Packet Flow through Linux bridge HA router environment 
 
 Packet flow through HA routers is identical to the path used in the Linux bridge using a single router. The master HA router will be the same as the single router. See that section for more details.
+
+#HA Failover Operatons
+
+![Neutron HA router Scenario - Failover operations](./images/scenario-l3ha-lb-flowfailover1.png "Neutron HA router Scenario - Failover operations")
 
 
 
