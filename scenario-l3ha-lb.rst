@@ -528,62 +528,61 @@ The keepalived processes for each router communicate with each other through an 
 
 #. Show network node qrouter namespace on the backup node:
    ::
-  $ ip netns exec qrouter-557bf478-6afe-48af-872f-63513f7e9b92 ip a
-  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
-      link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-      inet 127.0.0.1/8 scope host lo
-         valid_lft forever preferred_lft forever
-      inet6 ::1/128 scope host 
-         valid_lft forever preferred_lft forever
-  2: ha-602e7d30-71: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-      link/ether fa:16:3e:dd:8b:30 brd ff:ff:ff:ff:ff:ff
-      inet 169.254.192.3/18 brd 169.254.255.255 scope global ha-602e7d30-71
-         valid_lft forever preferred_lft forever
-      inet6 fe80::f816:3eff:fedd:8b30/64 scope link 
-         valid_lft forever preferred_lft forever
-  3: qr-4cb8f7ea-28: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-      link/ether fa:16:3e:c9:74:0c brd ff:ff:ff:ff:ff:ff
-      inet6 fe80::f816:3eff:fec9:740c/64 scope link 
-         valid_lft forever preferred_lft forever
-  4: qr-df9c2f7b-37: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-      link/ether fa:16:3e:87:60:5e brd ff:ff:ff:ff:ff:ff
-      inet6 fe80::f816:3eff:fe87:605e/64 scope link 
-         valid_lft forever preferred_lft forever
-  5: qg-ad2929f6-dd: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-      link/ether fa:16:3e:58:2e:10 brd ff:ff:ff:ff:ff:ff
-      inet6 fe80::f816:3eff:fe58:2e10/64 scope link 
-         valid_lft forever preferred_lft forever
+     $ ip netns exec qrouter-557bf478-6afe-48af-872f-63513f7e9b92 ip a
+     1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
+         link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+         inet 127.0.0.1/8 scope host lo
+            valid_lft forever preferred_lft forever
+         inet6 ::1/128 scope host 
+            valid_lft forever preferred_lft forever
+     2: ha-602e7d30-71: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+         link/ether fa:16:3e:dd:8b:30 brd ff:ff:ff:ff:ff:ff
+         inet 169.254.192.3/18 brd 169.254.255.255 scope global ha-602e7d30-71
+            valid_lft forever preferred_lft forever
+         inet6 fe80::f816:3eff:fedd:8b30/64 scope link 
+            valid_lft forever preferred_lft forever
+     3: qr-4cb8f7ea-28: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+         link/ether fa:16:3e:c9:74:0c brd ff:ff:ff:ff:ff:ff
+         inet6 fe80::f816:3eff:fec9:740c/64 scope link 
+            valid_lft forever preferred_lft forever
+     4: qr-df9c2f7b-37: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+         link/ether fa:16:3e:87:60:5e brd ff:ff:ff:ff:ff:ff
+         inet6 fe80::f816:3eff:fe87:605e/64 scope link 
+            valid_lft forever preferred_lft forever
+     5: qg-ad2929f6-dd: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+         link/ether fa:16:3e:58:2e:10 brd ff:ff:ff:ff:ff:ff
+         inet6 fe80::f816:3eff:fe58:2e10/64 scope link 
+            valid_lft forever preferred_lft forever
 
 #. Network node Linux bridges:
    ::
-  $ brctl show
-  bridge name     bridge id               STP enabled     interfaces
-  brqb304e495-b8          8000.921bf69da9dd       no              tap0d039391-92
+     $ brctl show
+     bridge name     bridge id               STP enabled     interfaces
+     brqb304e495-b8          8000.921bf69da9dd       no              tap0d039391-92
                                                           vxlan-102
-  brqd990778b-49          8000.1a5ce98d92e2       no              tap670e2e87-5f
+     brqd990778b-49          8000.1a5ce98d92e2       no              tap670e2e87-5f
                                                           vxlan-100
-  brqfde31a29-3e          8000.eebd5cd87645       no               eth2
+     brqfde31a29-3e          8000.eebd5cd87645       no               eth2
                                                           tapa41a7d54-94
 
 #. VRRP communication from one network node to the other:
   ::
-  $ ip netns exec qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2 tcpdump -e -n -vvv -l -i ha-0d039391-92
-  tcpdump: listening on ha-0d039391-92, link-type EN10MB (Ethernet), capture size 65535 bytes
-  16:00:39.994393 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36898, offset 0, flags [none], proto VRRP (112), length 40)
-      169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
-  16:00:41.995826 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36899, offset 0, flags [none], proto VRRP (112), length 40)
-      169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
-  16:00:43.997403 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36900, offset 0, flags [none], proto VRRP (112), length 40)
-      169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
-  16:00:45.998820 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36901, offset 0, flags [none], proto VRRP (112), length 40)
-      169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+     $ ip netns exec qrouter-744e386d-03de-4993-8ab2-3b55b78a22e2 tcpdump -e -n -vvv -l -i ha-0d039391-92
+     tcpdump: listening on ha-0d039391-92, link-type EN10MB (Ethernet), capture size 65535 bytes
+     16:00:39.994393 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36898, offset 0, flags [none], proto VRRP (112), length 40)
+         169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+     16:00:41.995826 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36899, offset 0, flags [none], proto VRRP (112), length 40)
+         169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+     16:00:43.997403 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36900, offset 0, flags [none], proto VRRP (112), length 40)
+         169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
+     16:00:45.998820 fa:16:3e:d9:c0:7c > 01:00:5e:00:00:12, ethertype IPv4 (0x0800), length 54: (tos 0xc0, ttl 255, id 36901, offset 0, flags [none], proto VRRP (112), length 40)
+         169.254.192.6 > 224.0.0.18: vrrp 169.254.192.6 > 224.0.0.18: VRRPv2, Advertisement, vrid 1, prio 50, authtype none, intvl 2s, length 20, addrs: 10.1.0.1
 
 The keepalived processes for a set of HA routers then monitor each other using VRRP multicasts. If the master router fails, it is detected due to a loss of its VRRP multicasts, a new master router will be elected and the VIPs are moved onto the new master router. When a failure occurs the conntrackd processes ensure that any existing TCP connection states exist on all of the backup routers so that the connections migrate smoothly over to the new master router preventing connection loss.
 
 #. On the controller node, ping the tenant router external network interface
    IP address, typically the lowest IP address in the external network
    subnet allocation range:
-
    ::
 
      $ ping -c 4 203.0.113.101
@@ -604,7 +603,6 @@ The keepalived processes for a set of HA routers then monitor each other using V
 #. Obtain console access to the instance.
 
    a. Test connectivity to the tenant network router:
-
       ::
 
         $ ping -c 4 192.168.1.1
@@ -619,7 +617,6 @@ The keepalived processes for a set of HA routers then monitor each other using V
         rtt min/avg/max/mdev = 0.357/0.451/0.504/0.055 ms
 
    #. Test connectivity to the Internet:
-
       ::
 
         $ ping -c 4 openstack.org
@@ -637,7 +634,6 @@ The keepalived processes for a set of HA routers then monitor each other using V
    to the instance.
 
 #. Create a floating IP address:
-
    ::
 
      $ neutron floatingip-create ext-net
@@ -656,14 +652,12 @@ The keepalived processes for a set of HA routers then monitor each other using V
      +---------------------+--------------------------------------+
 
 #. Associate the floating IP address with the instance:
-
    ::
 
      $ nova floating-ip-associate demo-instance1 203.0.113.102
 
 #. On the controller node, ping the floating IP address associated with
    the instance:
-
    ::
 
      $ ping -c 4 203.0.113.102
