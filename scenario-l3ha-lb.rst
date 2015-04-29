@@ -437,7 +437,7 @@ Verify Operation
      | d990778b-49ea-4beb-9336-6ea2248edf7d | private                                            | b7fe4e86-65d5-4e88-8266-88795ae4ac53 10.1.0.0/28      |
      | fde31a29-3e23-470d-bc9d-6218375dca4f | public                                             | 2e1d865a-ef56-41e9-aa31-63fb8a591003 172.16.0.0/24    |
      +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
-1. On the network nodes, verify creation of the ``qrouter`` and ``qdhcp`` namespaces:
+#. On the network nodes, verify creation of the ``qrouter`` and ``qdhcp`` namespaces:
 
   #. Network node 1:
    ::
