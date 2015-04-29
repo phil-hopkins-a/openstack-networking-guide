@@ -137,8 +137,7 @@ The compute nodes contain the following components:
 
   1. For instances using tenant networks on HA routers, the `qrouter` namespaces route network traffic among tenant networks.
 
-  #. For instances using tenant networks on HA routers, the qrouter namespaces perform DNAT and SNAT between tenant and external
- networks.
+  #. For instances using tenant networks on HA routers, the qrouter namespaces perform DNAT and SNAT between tenant and external networks.
 
 * Metadata agent handling metadata operations.
 
@@ -426,7 +425,7 @@ Upon creation of a network, router namespaces are built, with the number of rout
 Verify Operation
 ~~~~~~~~~~~~~~~~
 
-Show networks and verify the creation of the HA network:
+#. Show networks and verify the creation of the HA network:
    ::
    
      $ neutron net-list
@@ -440,7 +439,7 @@ Show networks and verify the creation of the HA network:
      +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
 1. On the network nodes, verify creation of the ``qrouter`` and ``qdhcp`` namespaces:
 
-Network node 1:
+  #. Network node 1:
    ::
 
      $ ip netns
@@ -448,7 +447,7 @@ Network node 1:
      qdhcp-4bc242e0-97c4-4791-908d-7c471fc10ad1
      qdhcp-d990778b-49ea-4beb-9336-6ea2248edf7d
 
-Network node 2:
+  #. Network node 2:
    ::
 
      $ ip netns
