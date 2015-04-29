@@ -43,39 +43,29 @@ Prerequisites
 
 Controller node
 
-  * Operational SQL server with `neutron` database and appropriate
-     configuration in the neutron-server.conf file.
+  * Operational SQL server with `neutron` database and appropriate configuration in the neutron-server.conf file.
 
-  * Operational message queue service with appropriate configuration
-     in the neutron-server.conf file.
+  * Operational message queue service with appropriate configuration in the neutron-server.conf file.
 
-  * Operational OpenStack Identity service with appropriate configuration
-     in the neutron-server.conf file.
+  * Operational OpenStack Identity service with appropriate configuration in the neutron-server.conf file.
 
-  * Operational OpenStack Compute controller/management service with
-     appropriate configuration to use neutron in the nova.conf file.
+  * Operational OpenStack Compute controller/management service with appropriate configuration to use neutron in the nova.conf file.
 
   * Neutron server service, ML2 plug-in, and any dependencies.
 
 Network node
 
-  * Operational OpenStack Identity service with appropriate configuration
-     in the neutron-server.conf file.
+  * Operational OpenStack Identity service with appropriate configuration in the neutron-server.conf file.
 
-  * ML2 plug-in, Linux bridge agent, L3 agent,
-     DHCP agent, metadata agent, and any dependencies including the
-     `ipset` and `conntrack` utilities.
+  * ML2 plug-in, Linux bridge agent, L3 agent, DHCP agent, metadata agent, and any dependencies including the `ipset` and `conntrack` utilities.
 
 Compute nodes
 
-  * Operational OpenStack Identity service with appropriate configuration
-     in the neutron-server.conf file.
+  * Operational OpenStack Identity service with appropriate configuration in the neutron-server.conf file.
 
-  * Operational OpenStack Compute controller/management service with
-     appropriate configuration to use neutron in the nova.conf file.
+  * Operational OpenStack Compute controller/management service with appropriate configuration to use neutron in the nova.conf file.
 
-  * ML2 plug-in, Linux bridge agent and any dependencies including the `ipset` and
-     `conntrack` utilities.
+  * ML2 plug-in, Linux bridge agent and any dependencies including the `ipset` and `conntrack` utilities.
 
 .. figure:: ./figures/scenario-l3ha-lb-services.png
    :alt: Neutron HA router Scenario - Service Layout
