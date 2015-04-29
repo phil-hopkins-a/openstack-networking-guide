@@ -24,7 +24,7 @@ Requirements
 #. At least two compute nodes with two network interfaces: management
    and instance tunnels.
 
-.. figure:: ./images/scenario-l3ha-hw.png
+.. figure:: ./figures/scenario-l3ha-hw.png
    :alt: Neutron HA Router Scenario - Network Layout
 
 .. warning:: 
@@ -77,7 +77,7 @@ Compute nodes
   * ML2 plug-in, Linux bridge agent and any dependencies including the `ipset` and
      `conntrack` utilities.
 
-.. figure:: ./images/scenario-l3ha-lb-services.png
+.. figure:: ./figures/scenario-l3ha-lb-services.png
    :alt: Neutron HA router Scenario - Service Layout
 
 Architecture
@@ -95,7 +95,7 @@ and the the gateway IP is used as a VIP in the master namespace.
 If a failure is detected a new master will be elected and the VIPs 
 are moved into the new master namespace.
 
-.. figure:: ./images/scenario-l3ha-general.png
+.. figure:: ./figures/scenario-l3ha-general.png
    :alt: Neutron HA router Scenario - Architecture Overview
 
 The network node runs the L3 agent, DHCP agent, and metadata agent. HA 
@@ -105,7 +105,7 @@ manages SNAT for any instances without a floating IP address as well as
 floating IPs within the namespace. The metadata agent handles metadata
 operations for instances using tenant networks on HA routers.
 
-.. figure:: ./images/scenario-l3ha-lb-network1.png
+.. figure:: ./figures/scenario-l3ha-lb-network1.png
    :alt: Neutron HA router Scenario - Network Node Overview
 
 The compute node runs the L2 Linux bridge agent. Using a separate Linux 
@@ -113,7 +113,7 @@ bridge for each network, virtual ethernet pairs connect the VM to the
 bridge for a network. A tunnel or VLAN interface is also connected to the
 bridge to connect to the data network interface.
 
-.. figure:: ./images/scenario-l3ha-lb-compute1.png
+.. figure:: ./figures/scenario-l3ha-lb-compute1.png
    :alt: Neutron HA router Scenario - Compute Node Overview
 
 Components
@@ -143,7 +143,7 @@ The network node contains the following components:
   1. The metadata agent handles metadata operations for instances
      using tenant networks using HA routers.
 
-.. figure:: ./images/scenario-l3ha-lb-network2.png
+.. figure:: ./figures/scenario-l3ha-lb-network2.png
    :alt: Neutron HA router Scenario - Network Node Components
 
 The compute nodes contain the following components:
@@ -172,7 +172,7 @@ The compute nodes contain the following components:
   1. The Networking service uses iptables to manage security groups for
      instances.
 
-.. figure:: ./images/scenario-l3ha-lb-compute2.png
+.. figure:: ./figures/scenario-l3ha-lb-compute2.png
    :alt: Neutron HA router Scenario - Compute Node Components
 
 Packet Flow through Linux bridge HA router environment
@@ -183,7 +183,7 @@ Packet flow through HA routers is identical to the path used in the Linux bridge
 HA Failover Operatons
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. figure:: ./images/scenario-l3ha-lb-flowfailover1.png
+.. figure:: ./figures/scenario-l3ha-lb-flowfailover1.png
    :alt: Neutron HA router Scenario - Failover operations
 
 Configuration
