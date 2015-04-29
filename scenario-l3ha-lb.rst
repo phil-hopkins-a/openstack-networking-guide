@@ -111,56 +111,42 @@ Components
 
 The network node contains the following components:
 
-* Linux bridge agent managing Linux bridges, connectivity among
-   them, and interaction with other network components
-   such as namespaces  and underlying interfaces.
+* Linux bridge agent managing Linux bridges, connectivity among them, and interaction with other network components such as namespaces  and underlying interfaces.
 
 * DHCP agent managing the `qdhcp` namespaces.
 
-  1. The `qdhcp` namespaces provide DHCP services for instances using 
-     tenant networks on HA routers.
+  1. The `qdhcp` namespaces provide DHCP services for instances using tenant networks on HA routers.
 
 * L3 agent managing the `qrouter` namespaces.
 
-  1. For instances using tenant networks using HA routers, the
-     `qrouter` namespaces perform SNAT between tenant and external
-     networks. They also route metadata traffic between instances using
-     tenant networks on HA routers and the metadata agent.
+  1. For instances using tenant networks using HA routers, the `qrouter` namespaces perform SNAT between tenant and external networks. They also route metadata traffic between instances using tenant networks on HA routers and the metadata agent.
 
 
 * Metadata agent handling metadata operations.
 
-  1. The metadata agent handles metadata operations for instances
-     using tenant networks using HA routers.
+  1. The metadata agent handles metadata operations for instances using tenant networks using HA routers.
 
 .. figure:: ./figures/scenario-l3ha-lb-network2.png
    :alt: Neutron HA router Scenario - Network Node Components
 
 The compute nodes contain the following components:
 
-* Linux bridge agent managing Linux bridges, connectivity among
-   them, and interaction via virtual ethernet pairs with other network 
-   components such as namespaces, Linux bridges, and underlying interfaces.
+* Linux bridge agent managing Linux bridges, connectivity among them, and interaction via virtual ethernet pairs with other network  components such as namespaces, Linux bridges, and underlying interfaces.
 
 * L3 agent managing the `qrouter` namespace.
 
-  1. For instances using tenant networks on HA routers, the
-     `qrouter` namespaces route network traffic among tenant
-     networks.
+  1. For instances using tenant networks on HA routers, the `qrouter` namespaces route network traffic among tenant networks.
 
-  1. For instances using tenant networks on HA routers, the
-     qrouter namespaces perform DNAT and SNAT between tenant and external
-     networks.
+  #. For instances using tenant networks on HA routers, the qrouter namespaces perform DNAT and SNAT between tenant and external
+ networks.
 
 * Metadata agent handling metadata operations.
 
-  1. The metadata agent handles metadata operations for instances
-     using tenant networks on distributed routers.
+  1. The metadata agent handles metadata operations for instances using tenant networks on distributed routers.
 
 * Linux bridges handling security groups.
 
-  1. The Networking service uses iptables to manage security groups for
-     instances.
+  1. The Networking service uses iptables to manage security groups for instances.
 
 .. figure:: ./figures/scenario-l3ha-lb-compute2.png
    :alt: Neutron HA router Scenario - Compute Node Components
@@ -452,8 +438,7 @@ Show networks and verify the creation of the HA network:
      | d990778b-49ea-4beb-9336-6ea2248edf7d | private                                            | b7fe4e86-65d5-4e88-8266-88795ae4ac53 10.1.0.0/28      |
      | fde31a29-3e23-470d-bc9d-6218375dca4f | public                                             | 2e1d865a-ef56-41e9-aa31-63fb8a591003 172.16.0.0/24    |
      +--------------------------------------+----------------------------------------------------+-------------------------------------------------------+
-1. On the network nodes, verify creation of the ``qrouter`` and ``qdhcp``
-   namespaces:
+1. On the network nodes, verify creation of the ``qrouter`` and ``qdhcp`` namespaces:
 
 Network node 1:
    ::
@@ -563,9 +548,7 @@ The keepalived processes for each router communicate with each other through an 
 
 The keepalived processes for a set of HA routers then monitor each other using VRRP multicasts. If the master router fails, it is detected due to a loss of its VRRP multicasts, a new master router will be elected and the VIPs are moved onto the new master router. When a failure occurs the conntrackd processes ensure that any existing TCP connection states exist on all of the backup routers so that the connections migrate smoothly over to the new master router preventing connection loss.
 
-#. On the controller node, ping the tenant router external network interface
-   IP address, typically the lowest IP address in the external network
-   subnet allocation range:
+#. On the controller node, ping the tenant router external network interface IP address, typically the lowest IP address in the external network subnet allocation range:
    ::
 
      $ ping -c 4 203.0.113.101
@@ -613,8 +596,7 @@ The keepalived processes for a set of HA routers then monitor each other using V
         4 packets transmitted, 4 received, 0% packet loss, time 3003ms
         rtt min/avg/max/mdev = 17.431/17.575/17.734/0.143 ms
 
-#. Create the appropriate security group rules to allow ping and SSH access
-   to the instance.
+#. Create the appropriate security group rules to allow ping and SSH access to the instance.
 
 #. Create a floating IP address:
    ::
@@ -639,8 +621,7 @@ The keepalived processes for a set of HA routers then monitor each other using V
 
      $ nova floating-ip-associate demo-instance1 203.0.113.102
 
-#. On the controller node, ping the floating IP address associated with
-   the instance:
+#. On the controller node, ping the floating IP address associated with the instance:
    ::
 
      $ ping -c 4 203.0.113.102
